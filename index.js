@@ -1,5 +1,3 @@
-let homePage = require("./pages/home.html");
-
 const express = require("express");
 
 let app = express();
@@ -27,7 +25,7 @@ app.use(express.urlencoded({extended : true}));
 //TODO: Add a route to display data and accept data to add to the database
 
 app.get("/", (req, res) => {
-    res.send(homePage);
+    res.sendFile(__dirname + "/index.html");
 });
 
 app.listen(port, () => console.log("Listening on port: " + port + "."));
