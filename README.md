@@ -1,2 +1,2 @@
 # INTEX
-AHHHHHHHHHHHH
+Deployed to https://intex.miwauniverse.com/
