@@ -1,0 +1,459 @@
+<!-- File: resources.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/index.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        form {
+            max-width: 600px;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            margin-top: 5px;
+            margin-bottom: 15px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <title>Resources - Provo SMU MH</title>
+</head>
+<body>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+    <!-- Initialize Select2 for the affiliatedOrganizations dropdown -->
+    <script>
+        $(document).ready(function() {
+            $('#affiliatedOrganizations').select2();
+            $('#socialMediaPlatforms').select2();
+        });
+    </script>
+
+    <header>
+        <div>
+            <h1>Resources - Provo SMU MH</h1>
+        </div>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/about.html">About</a>
+            <a href="#">Survey</a>
+            <div class="login">
+                <a class="login-button" href="#login">Login</a>
+            </div>
+        </nav>
+    </header>
+
+    <div>
+        <h2>Explore Our Resources</h2>
+        <!-- Your resources page content goes here -->
+    </div>
+
+    <div>
+        <h2>Take Our Social Media Usage Survey</h2>
+        <form>
+            <label for="age">Age:</label>
+<input type="text" id="age" name="age" maxlength="3" oninput="validateAge(this)">
+<div id="ageError" style="color: red;"></div>
+
+<script>
+    function validateAge(input) {
+        var age = input.value;
+        var ageError = document.getElementById("ageError");
+
+        // Use a regular expression to check if the input is a positive integer with at most 3 digits
+        if (/^[1-9]\d{0,2}$/.test(age)) {
+            ageError.textContent = ""; // Clear the error message
+        } else {
+            ageError.textContent = "Please enter a valid age (up to 3 numeric characters only)";
+        }
+    }
+</script>
+        
+                <label for="gender">Gender:</label>
+            <select id="gender" name="gender">
+                <option value="">Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select>
+
+            <label for="relationshipStatus">Relationship Status:</label>
+            <select id="relationshipStatus" name="relationshipStatus">
+                <option value="">Select Relationship Status</option>
+                <option value="divorced">Divorced</option>
+                <option value="inRelationship">In a Relationship</option>
+                <option value="married">Married</option>
+                <option value="single">Single</option>
+            </select>
+                
+                <label for="occupationStatus">Occupation Status:</label>
+            <select id="occupationStatus" name="occupationStatus">
+                <option value="">Select Occupation</option>
+                <option value="retired">Retired</option>
+                <option value="salaried">Salaried Worker</option>
+                <option value="schoolstudent">School Student</option>
+                <option value="university">University Student</option>
+            </select>
+        
+
+            <label for="affiliatedOrganizations">What type of organizations are you affiliated with? (Select more than one if applicable)</label>
+<select id="affiliatedOrganizations" name="affiliatedOrganizations" multiple="multiple">
+    <option value="University2">University</option>
+    <option value="private">Private</option>
+    <option value="school">School</option>
+    <option value="company">Company</option>
+    <option value="government">Government</option>
+</select>
+        
+                <label for="useSocialMedia">Do you use social media?</label>
+                <select id="useSocialMedia" name="useSocialMedia">
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+
+                <label for="socialMediaPlatforms">What social media platforms do you commonly use? (Select more than one if applicable) </label>
+    <select id="socialMediaPlatforms" name="socialMediaPlatforms" multiple="multiple">
+    <option value="University2">FIX ME TALK TO GROUP</option>
+</select>
+        
+                <label for="timeOnSocialMedia">Average Time You Spend on Social Media:</label>
+                <select id="timeOnSocialMedia" name="timeOnSocialMedia">
+                    <option value="">Select Time Range</option>
+                    <option value="lessThan1Hour">Less than an hour</option>
+                    <option value="1To2Hours">Between 1 and 2 hours</option>
+                    <option value="2To3Hours">Between 2 and 3 hours</option>
+                    <option value="3To4Hours">Between 3 and 4 hours</option>
+                    <option value="4To5Hours">Between 4 and 5 hours</option>
+                    <option value="moreThan5Hours">More than 5 hours</option>
+                </select>
+        
+                <!-- Sliding bars for questions 9 to 20 -->
+                <label for="question9">How often do you find yourself using social media without a specific purpose?</label>
+<div style="position: relative;">
+    <input type="range" id="question9" name="question9" min="1" max="5" value="1" list="question9Values">
+    <div style="display: flex; justify-content: space-between; position: absolute; bottom: -25px; width: 100%;">
+        <span>1</span>
+        <span>2</span>
+        <span>3</span>
+        <span>4</span>
+        <span>5</span>
+    </div>
+</div>
+<datalist id="question9Values">
+    <option>1</option>
+    <option>2</option>
+    <option>3</option>
+    <option>4</option>
+    <option>5</option>
+</datalist>
+<br>
+<br>
+
+<label for="question10">How often do you get distracted by social media when you are busy doing something?
+</label>
+<div style="position: relative;">
+    <input type="range" id="question10" name="question10" min="1" max="5" value="1" list="question10Values">
+    <div style="display: flex; justify-content: space-between; position: absolute; bottom: -25px; width: 100%;">
+        <span>1</span>
+        <span>2</span>
+        <span>3</span>
+        <span>4</span>
+        <span>5</span>
+    </div>
+</div>
+<datalist id="question10Values">
+    <option>1</option>
+    <option>2</option>
+    <option>3</option>
+    <option>4</option>
+    <option>5</option>
+</datalist>
+<br>
+<br>
+
+<label for="question11">Do you feel restless if you haven't used social media in a while?
+
+</label>
+<div style="position: relative;">
+    <input type="range" id="question11" name="question11" min="1" max="5" value="1" list="question11Values">
+    <div style="display: flex; justify-content: space-between; position: absolute; bottom: -25px; width: 100%;">
+        <span>1</span>
+        <span>2</span>
+        <span>3</span>
+        <span>4</span>
+        <span>5</span>
+    </div>
+</div>
+<datalist id="question11Values">
+    <option>1</option>
+    <option>2</option>
+    <option>3</option>
+    <option>4</option>
+    <option>5</option>
+</datalist>
+<br>
+<br>
+<label for="question12">How easily distracted are you?
+</label>
+<div style="position: relative;">
+    <input type="range" id="question12" name="question12" min="1" max="5" value="1" list="question12Values">
+    <div style="display: flex; justify-content: space-between; position: absolute; bottom: -25px; width: 100%;">
+        <span>1</span>
+        <span>2</span>
+        <span>3</span>
+        <span>4</span>
+        <span>5</span>
+    </div>
+</div>
+<datalist id="question12Values">
+    <option>1</option>
+    <option>2</option>
+    <option>3</option>
+    <option>4</option>
+    <option>5</option>
+</datalist>
+<br>
+<br>
+
+<label for="question13">How much are you bothered by worries?
+</label>
+<div style="position: relative;">
+    <input type="range" id="question13" name="question13" min="1" max="5" value="1" list="question13Values">
+    <div style="display: flex; justify-content: space-between; position: absolute; bottom: -25px; width: 100%;">
+        <span>1</span>
+        <span>2</span>
+        <span>3</span>
+        <span>4</span>
+        <span>5</span>
+    </div>
+</div>
+<datalist id="question13Values">
+    <option>1</option>
+    <option>2</option>
+    <option>3</option>
+    <option>4</option>
+    <option>5</option>
+</datalist>
+<br>
+<br>
+
+<label for="question14">Do you find it difficult to concentrate on things?
+</label>
+<div style="position: relative;">
+    <input type="range" id="question14" name="question14" min="1" max="5" value="1" list="question14Values">
+    <div style="display: flex; justify-content: space-between; position: absolute; bottom: -25px; width: 100%;">
+        <span>1</span>
+        <span>2</span>
+        <span>3</span>
+        <span>4</span>
+        <span>5</span>
+    </div>
+</div>
+<datalist id="question14Values">
+    <option>1</option>
+    <option>2</option>
+    <option>3</option>
+    <option>4</option>
+    <option>5</option>
+</datalist>
+<br>
+<br>
+
+<label for="question15">How often do you compare yourself to other successful people through the use of social media?
+</label>
+<div style="position: relative;">
+    <input type="range" id="question15" name="question15" min="1" max="5" value="1" list="question15Values">
+    <div style="display: flex; justify-content: space-between; position: absolute; bottom: -25px; width: 100%;">
+        <span>1</span>
+        <span>2</span>
+        <span>3</span>
+        <span>4</span>
+        <span>5</span>
+    </div>
+</div>
+<datalist id="question15Values">
+    <option>1</option>
+    <option>2</option>
+    <option>3</option>
+    <option>4</option>
+    <option>5</option>
+</datalist>
+<br>
+<br>
+
+<label for="question16">Following the previous question, how do you feel about these comparisons, generally speaking?
+</label>
+<div style="position: relative;">
+    <input type="range" id="question16" name="question16" min="1" max="5" value="1" list="question16Values">
+    <div style="display: flex; justify-content: space-between; position: absolute; bottom: -25px; width: 100%;">
+        <span>1</span>
+        <span>2</span>
+        <span>3</span>
+        <span>4</span>
+        <span>5</span>
+    </div>
+</div>
+<datalist id="question16Values">
+    <option>1</option>
+    <option>2</option>
+    <option>3</option>
+    <option>4</option>
+    <option>5</option>
+</datalist>
+<br>
+<br>
+
+<label for="question17">How often do you look to seek validation from features of social media?
+
+</label>
+<div style="position: relative;">
+    <input type="range" id="question17" name="question17" min="1" max="5" value="1" list="question17Values">
+    <div style="display: flex; justify-content: space-between; position: absolute; bottom: -25px; width: 100%;">
+        <span>1</span>
+        <span>2</span>
+        <span>3</span>
+        <span>4</span>
+        <span>5</span>
+    </div>
+</div>
+<datalist id="question17Values">
+    <option>1</option>
+    <option>2</option>
+    <option>3</option>
+    <option>4</option>
+    <option>5</option>
+</datalist>
+<br>
+<br>
+
+<label for="question18">How often do you feel depressed or down?
+
+</label>
+<div style="position: relative;">
+    <input type="range" id="question18" name="question18" min="1" max="5" value="1" list="question18Values">
+    <div style="display: flex; justify-content: space-between; position: absolute; bottom: -25px; width: 100%;">
+        <span>1</span>
+        <span>2</span>
+        <span>3</span>
+        <span>4</span>
+        <span>5</span>
+    </div>
+</div>
+<datalist id="question18Values">
+    <option>1</option>
+    <option>2</option>
+    <option>3</option>
+    <option>4</option>
+    <option>5</option>
+</datalist>
+<br>
+<br>
+
+<label for="question19">How frequently does your interested in daily activities fluctuate?
+
+
+</label>
+<div style="position: relative;">
+    <input type="range" id="question19" name="question19" min="1" max="5" value="1" list="question19Values">
+    <div style="display: flex; justify-content: space-between; position: absolute; bottom: -25px; width: 100%;">
+        <span>1</span>
+        <span>2</span>
+        <span>3</span>
+        <span>4</span>
+        <span>5</span>
+    </div>
+</div>
+<datalist id="question19Values">
+    <option>1</option>
+    <option>2</option>
+    <option>3</option>
+    <option>4</option>
+    <option>5</option>
+</datalist>
+<br>
+<br>
+
+<label for="question20">How often do you face issues regarding sleep?
+
+</label>
+<div style="position: relative;">
+    <input type="range" id="question20" name="question20" min="1" max="5" value="1" list="question20Values">
+    <div style="display: flex; justify-content: space-between; position: absolute; bottom: -25px; width: 100%;">
+        <span>1</span>
+        <span>2</span>
+        <span>3</span>
+        <span>4</span>
+        <span>5</span>
+    </div>
+</div>
+<datalist id="question20Values">
+    <option>1</option>
+    <option>2</option>
+    <option>3</option>
+    <option>4</option>
+    <option>5</option>
+</datalist>
+<br>
+<br>
+
+
+
+
+        
+                <!-- Repeat the above for questions 10 to 20 -->
+        
+                <button type="submit">Submit</button>
+            
+           
+        </form>
+    </div>
+
+</body>
+</html>
