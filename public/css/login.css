@@ -58,6 +58,7 @@ body {
     transition: background-color 0.5s;
     font-family: 'Avenir', sans-serif;
     font-size: 18px;
+    cursor: pointer;
 
 }
 
