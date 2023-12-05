@@ -9,6 +9,13 @@
         h1 {
             text-align: center;
         }
+        
+        .small-text {
+            font-size: 0.8em; /* Adjust the size as needed */
+            color: #888; /* Optional: You can add a different color */
+            display: block; /* Ensure the small text is on a new line */
+            margin-bottom: 5px; /* Add some space between the small text and the question */
+        }
 
         form {
             font-family: 'Barlow', sans-serif;
