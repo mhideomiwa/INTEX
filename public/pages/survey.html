@@ -75,8 +75,19 @@
             $('#affiliatedOrganizations').select2();
             $('#socialMediaPlatforms').select2();
         });
-    </script>
+        function validateAge(input) {
+        var age = input.value;
+        var ageError = document.getElementById("ageError");
 
+        // Use a regular expression to check if the input is a positive integer with at most 3 digits
+        if (/^[1-9]\d{0,2}$/.test(age)) {
+            ageError.textContent = ""; // Clear the error message
+        } else {
+            ageError.textContent = "Please enter a valid age";
+            input.value = ""; // Clear the input value
+        }
+    }
+    </script>
     <header>
         <div>
             <a href="../index.html"><h1>Resources - Provo SMU MH</h1></a>
@@ -100,35 +111,49 @@
 
     <div>
         <h2>Take Our Social Media Usage Survey</h2>
-        <form>
-            <label for="age">Age:</label>
-<input type="text" id="age" name="age" maxlength="3" oninput="validateAge(this)">
-<div id="ageError" style="color: red;"></div>
+        <form id="surveyForm" onsubmit="return validateForm()">
+            <label for="age">Age:*</label>
+            <input type="text" id="age" name="age" maxlength="3" oninput="validateAge(this)" required>
+            <div id="ageError" style="color: red;"></div>
 
 <script>
-    function validateAge(input) {
-        var age = input.value;
-        var ageError = document.getElementById("ageError");
+    $(document).ready(function() {
+        $('#affiliatedOrganizations').select2();
+        $('#socialMediaPlatforms').select2();
+    });
 
-        // Use a regular expression to check if the input is a positive integer with at most 3 digits
-        if (/^[1-9]\d{0,2}$/.test(age)) {
-            ageError.textContent = ""; // Clear the error message
-        } else {
-            ageError.textContent = "Please enter a valid age (up to 3 numeric characters only)";
+    function handleOrganizationSelection(selectElement) {
+        var selectedOption = selectElement.value;
+        var affiliatedOrganizations = $('#affiliatedOrganizations');
+
+        // If 'N/A' is selected, clear all other selections
+        if (selectedOption === 'na') {
+            affiliatedOrganizations.val(['na']);
+            affiliatedOrganizations.prop('disabled', true);
+        }
+        // If an option other than 'N/A' is selected, clear 'N/A' and enable multi-select
+        else {
+            affiliatedOrganizations.val(affiliatedOrganizations.val().filter(option => option !== 'na'));
+            affiliatedOrganizations.prop('disabled', false);
         }
     }
 </script>
+
+
         
-                <label for="gender">Gender:</label>
-            <select id="gender" name="gender">
+<label for="gender">Gender:*</label>
+<select id="gender" name="gender" required>
                 <option value="">Select Gender</option>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
-                <option value="other">Other</option>
+                <option value="transgender">Transgender</option>
+                <option value="non-binary">Non-binary</option>
+                <option value="prefer">Prefer not to say</option>
+
             </select>
 
-            <label for="relationshipStatus">Relationship Status:</label>
-            <select id="relationshipStatus" name="relationshipStatus">
+            <label for="relationshipStatus">Relationship Status:*</label>
+            <select id="relationshipStatus" name="relationshipStatus" required>
                 <option value="">Select Relationship Status</option>
                 <option value="divorced">Divorced</option>
                 <option value="inRelationship">In a Relationship</option>
@@ -136,8 +161,8 @@
                 <option value="single">Single</option>
             </select>
                 
-                <label for="occupationStatus">Occupation Status:</label>
-            <select id="occupationStatus" name="occupationStatus">
+            <label for="occupationStatus">Occupation Status:*</label>
+            <select id="occupationStatus" name="occupationStatus" required>
                 <option value="">Select Occupation</option>
                 <option value="retired">Retired</option>
                 <option value="salaried">Salaried Worker</option>
@@ -146,28 +171,59 @@
             </select>
         
 
-            <label for="affiliatedOrganizations">What type of organizations are you affiliated with? (Select more than one if applicable)</label>
-<select id="affiliatedOrganizations" name="affiliatedOrganizations" multiple="multiple">
+            <label for="affiliatedOrganizations">What type of organizations are you affiliated with? (Select more than one if applicable)*</label>
+            <select id="affiliatedOrganizations" name="affiliatedOrganizations" multiple="multiple" onchange="handleOrganizationSelection(this)" required>
     <option value="University2">University</option>
     <option value="private">Private</option>
     <option value="school">School</option>
     <option value="company">Company</option>
     <option value="government">Government</option>
+    <option value="na">N/A</option>
 </select>
         
-                <label for="useSocialMedia">Do you use social media?</label>
-                <select id="useSocialMedia" name="useSocialMedia">
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                </select>
 
-                <label for="socialMediaPlatforms">What social media platforms do you commonly use? (Select more than one if applicable) </label>
-    <select id="socialMediaPlatforms" name="socialMediaPlatforms" multiple="multiple">
-    <option value="University2">FIX ME TALK TO GROUP</option>
+<label for="useSocialMedia">Do you use social media?*</label>
+<select id="useSocialMedia" name="useSocialMedia" required onchange="toggleSocialMediaPlatforms()">
+    <option value="yes">Yes</option>
+    <option value="no">No</option>
 </select>
+
+<label for="socialMediaPlatforms">What social media platforms do you commonly use? (Select more than one if applicable)*</label>
+<select id="socialMediaPlatforms" name="socialMediaPlatforms" multiple="multiple" required>
+    <option value="Facebook">Facebook</option>
+    <option value="Instagram">Instagram</option>
+    <option value="Twitter">Twitter</option>
+    <option value="YouTube">YouTube</option>
+    <option value="Discord">Discord</option>
+    <option value="Reddit">Reddit</option>
+    <option value="TikTok">TikTok</option>
+    <option value="Pinterest">Pinterest</option>
+    <option value="Snapchat">Snapchat</option>
+    <option value="na">N/A</option>
+</select>
+
+<script>
+    function toggleSocialMediaPlatforms() {
+        var useSocialMediaSelect = document.getElementById("useSocialMedia");
+        var socialMediaPlatformsSelect = document.getElementById("socialMediaPlatforms");
+
+        if (useSocialMediaSelect.value === "no") {
+            // Remove "N/A" from the options list
+            var naOption = socialMediaPlatformsSelect.querySelector('option[value="na"]');
+            naOption.style.display = "none";
+            socialMediaPlatformsSelect.value = ["na"]; // Set to N/A
+            socialMediaPlatformsSelect.disabled = true;
+        } else {
+            // Re-add "N/A" to the options list
+            var naOption = socialMediaPlatformsSelect.querySelector('option[value="na"]');
+            naOption.style.display = ""; // Show the "N/A" option
+            socialMediaPlatformsSelect.disabled = false;
+        }
+    }
+</script>
         
-                <label for="timeOnSocialMedia">Average Time You Spend on Social Media:</label>
-                <select id="timeOnSocialMedia" name="timeOnSocialMedia">
+<label for="timeOnSocialMedia">Average Time You Spend on Social Media:*</label>
+<select id="timeOnSocialMedia" name="timeOnSocialMedia" required>
                     <option value="">Select Time Range</option>
                     <option value="lessThan1Hour">Less than an hour</option>
                     <option value="1To2Hours">Between 1 and 2 hours</option>
@@ -178,31 +234,31 @@
                 </select>
         
                 <!-- Sliding bars for questions 9 to 20 -->
-                <label for="question9">How often do you find yourself using social media without a specific purpose?</label>
-<div style="position: relative;">
-    <input type="range" id="question9" name="question9" min="1" max="5" value="1" list="question9Values">
-    <div style="display: flex; justify-content: space-between; position: absolute; bottom: -25px; width: 100%;">
-        <span>1</span>
-        <span>2</span>
-        <span>3</span>
-        <span>4</span>
-        <span>5</span>
-    </div>
-</div>
-<datalist id="question9Values">
-    <option>1</option>
-    <option>2</option>
-    <option>3</option>
-    <option>4</option>
-    <option>5</option>
-</datalist>
-<br>
-<br>
+                <label for="question9">How often do you find yourself using social media without a specific purpose?*</label>
+            <div style="position: relative;">
+                <input type="range" id="question9" name="question9" min="1" max="5" value="1" list="question9Values" required>
+                <div style="display: flex; justify-content: space-between; position: absolute; bottom: -25px; width: 100%;">
+                    <span>1</span>
+                    <span>2</span>
+                    <span>3</span>
+                    <span>4</span>
+                    <span>5</span>
+                </div>
+            </div>
+            <datalist id="question9Values">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+            </datalist>
+            <br>
+            <br>
 
-<label for="question10">How often do you get distracted by social media when you are busy doing something?
+<label for="question10">How often do you get distracted by social media when you are busy doing something?*
 </label>
 <div style="position: relative;">
-    <input type="range" id="question10" name="question10" min="1" max="5" value="1" list="question10Values">
+    <input type="range" id="question10" name="question10" min="1" max="5" value="1" list="question10Values" required>
     <div style="display: flex; justify-content: space-between; position: absolute; bottom: -25px; width: 100%;">
         <span>1</span>
         <span>2</span>
@@ -221,11 +277,11 @@
 <br>
 <br>
 
-<label for="question11">Do you feel restless if you haven't used social media in a while?
+<label for="question11">Do you feel restless if you haven't used social media in a while?*
 
 </label>
 <div style="position: relative;">
-    <input type="range" id="question11" name="question11" min="1" max="5" value="1" list="question11Values">
+    <input type="range" id="question11" name="question11" min="1" max="5" value="1" list="question11Values" required>
     <div style="display: flex; justify-content: space-between; position: absolute; bottom: -25px; width: 100%;">
         <span>1</span>
         <span>2</span>
@@ -243,10 +299,10 @@
 </datalist>
 <br>
 <br>
-<label for="question12">How easily distracted are you?
+<label for="question12">How easily distracted are you?*
 </label>
 <div style="position: relative;">
-    <input type="range" id="question12" name="question12" min="1" max="5" value="1" list="question12Values">
+    <input type="range" id="question12" name="question12" min="1" max="5" value="1" list="question12Values" required>
     <div style="display: flex; justify-content: space-between; position: absolute; bottom: -25px; width: 100%;">
         <span>1</span>
         <span>2</span>
@@ -265,10 +321,10 @@
 <br>
 <br>
 
-<label for="question13">How much are you bothered by worries?
+<label for="question13">How much are you bothered by worries?*
 </label>
 <div style="position: relative;">
-    <input type="range" id="question13" name="question13" min="1" max="5" value="1" list="question13Values">
+    <input type="range" id="question13" name="question13" min="1" max="5" value="1" list="question13Values" required>
     <div style="display: flex; justify-content: space-between; position: absolute; bottom: -25px; width: 100%;">
         <span>1</span>
         <span>2</span>
@@ -287,10 +343,10 @@
 <br>
 <br>
 
-<label for="question14">Do you find it difficult to concentrate on things?
+<label for="question14">Do you find it difficult to concentrate on things?*
 </label>
 <div style="position: relative;">
-    <input type="range" id="question14" name="question14" min="1" max="5" value="1" list="question14Values">
+    <input type="range" id="question14" name="question14" min="1" max="5" value="1" list="question14Values" required>
     <div style="display: flex; justify-content: space-between; position: absolute; bottom: -25px; width: 100%;">
         <span>1</span>
         <span>2</span>
@@ -309,10 +365,10 @@
 <br>
 <br>
 
-<label for="question15">How often do you compare yourself to other successful people through the use of social media?
+<label for="question15">How often do you compare yourself to other successful people through the use of social media?*
 </label>
 <div style="position: relative;">
-    <input type="range" id="question15" name="question15" min="1" max="5" value="1" list="question15Values">
+    <input type="range" id="question15" name="question15" min="1" max="5" value="1" list="question15Values" required>
     <div style="display: flex; justify-content: space-between; position: absolute; bottom: -25px; width: 100%;">
         <span>1</span>
         <span>2</span>
@@ -331,10 +387,10 @@
 <br>
 <br>
 
-<label for="question16">Following the previous question, how do you feel about these comparisons, generally speaking?
+<label for="question16">Following the previous question, how do you feel about these comparisons, generally speaking?*
 </label>
 <div style="position: relative;">
-    <input type="range" id="question16" name="question16" min="1" max="5" value="1" list="question16Values">
+    <input type="range" id="question16" name="question16" min="1" max="5" value="1" list="question16Values" required>
     <div style="display: flex; justify-content: space-between; position: absolute; bottom: -25px; width: 100%;">
         <span>1</span>
         <span>2</span>
@@ -353,11 +409,11 @@
 <br>
 <br>
 
-<label for="question17">How often do you look to seek validation from features of social media?
+<label for="question17">How often do you look to seek validation from features of social media?*
 
 </label>
 <div style="position: relative;">
-    <input type="range" id="question17" name="question17" min="1" max="5" value="1" list="question17Values">
+    <input type="range" id="question17" name="question17" min="1" max="5" value="1" list="question17Values" required>
     <div style="display: flex; justify-content: space-between; position: absolute; bottom: -25px; width: 100%;">
         <span>1</span>
         <span>2</span>
@@ -376,11 +432,11 @@
 <br>
 <br>
 
-<label for="question18">How often do you feel depressed or down?
+<label for="question18">How often do you feel depressed or down?*
 
 </label>
 <div style="position: relative;">
-    <input type="range" id="question18" name="question18" min="1" max="5" value="1" list="question18Values">
+    <input type="range" id="question18" name="question18" min="1" max="5" value="1" list="question18Values" required>
     <div style="display: flex; justify-content: space-between; position: absolute; bottom: -25px; width: 100%;">
         <span>1</span>
         <span>2</span>
@@ -399,12 +455,12 @@
 <br>
 <br>
 
-<label for="question19">How frequently does your interested in daily activities fluctuate?
+<label for="question19">How frequently does your interested in daily activities fluctuate?*
 
 
 </label>
 <div style="position: relative;">
-    <input type="range" id="question19" name="question19" min="1" max="5" value="1" list="question19Values">
+    <input type="range" id="question19" name="question19" min="1" max="5" value="1" list="question19Values" required>
     <div style="display: flex; justify-content: space-between; position: absolute; bottom: -25px; width: 100%;">
         <span>1</span>
         <span>2</span>
@@ -423,11 +479,11 @@
 <br>
 <br>
 
-<label for="question20">How often do you face issues regarding sleep?
+<label for="question20">How often do you face issues regarding sleep?*
 
 </label>
 <div style="position: relative;">
-    <input type="range" id="question20" name="question20" min="1" max="5" value="1" list="question20Values">
+    <input type="range" id="question20" name="question20" min="1" max="5" value="1" list="question20Values" required>
     <div style="display: flex; justify-content: space-between; position: absolute; bottom: -25px; width: 100%;">
         <span>1</span>
         <span>2</span>
@@ -446,17 +502,44 @@
 <br>
 <br>
 
-
-
-
-        
-                <!-- Repeat the above for questions 10 to 20 -->
         
                 <button type="submit">Submit</button>
             
            
         </form>
     </div>
+    <script>
+        function validateForm() {
+            var form = document.getElementById("surveyForm");
+            var elements = form.elements;
+    
+            for (var i = 0; i < elements.length; i++) {
+                if (elements[i].hasAttribute("required") && elements[i].type !== "range" && elements[i].value === "") {
+                    alert("Please fill in all required fields.");
+                    return false;
+                }
+    
+                if (elements[i].type === "range" && elements[i].hasAttribute("required")) {
+                    // Check if the sliding bar has been interacted with (value other than the default)
+                    if (elements[i].value === "1" && !elements[i].hasAttribute("data-interacted")) {
+                        alert("Please select a value for the sliding bar questions.");
+                        return false;
+                    }
+                }
+            }
+    
+            return true;
+        }
+    
+        // Add an event listener to mark sliding bars as interacted
+        document.addEventListener("input", function (event) {
+            if (event.target.type === "range") {
+                event.target.setAttribute("data-interacted", "true");
+            }
+        });
+    </script>
+
+
 
 </body>
 </html>
