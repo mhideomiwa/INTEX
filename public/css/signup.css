@@ -2,7 +2,7 @@
 
 body {
     font-family: 'Barlow', sans-serif;
-    background-color: #2b2823;
+    background-color: #47433c;
 }
 
 
@@ -71,7 +71,7 @@ body {
     align-items: center;
 }
 
-a {
+.logInLink {
     display: inline-block;
     padding: 7px;
     background-color: #374785;
@@ -85,6 +85,6 @@ a {
     margin-left: 20px;
 }
 
-a:hover {
+.logInLink:hover {
     background-color: #A8D0E6;
 }
