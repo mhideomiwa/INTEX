@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500&display=swap');
+
+body {
+    font-family: 'Barlow', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #fcfcfc;
+    color: #333;
+}
+
+header {
+    background-color: #4a4a4a;
+    padding: 10px 20px;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    margin: 0;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    margin-right: 20px;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: #ffd700;
+}
+
+.login {
+    margin-left: auto;
+}
+
+.login-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff; /* Blue color */
+    color: #fff;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.login-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+.welcome-block {
+    text-align: center;
+    max-width: 80%;
+    padding: 50px;
+    margin: 20px auto;
+    background-color: #66cdaa; /* Different color for welcome block */
+    color: #fff; /* Text color for welcome block */
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.purpose-block {
+    text-align: center;
+    max-width: 80%;
+    padding: 50px;
+    margin: 20px auto;
+    background-color: #007bff; /* Different color for purpose block */
+    color: #fff; /* Text color for purpose block */
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.survey-link {
+    display: inline-block;
+    padding: 15px;
+    background-color: #4a4a4a;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.survey-link:hover {
+    background-color: #555;
+}
