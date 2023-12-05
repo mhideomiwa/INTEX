@@ -1,5 +1,7 @@
 const express = require("express");
 
+const session = require("express-session");
+
 let app = express();
 
 let path = require("path");
@@ -10,6 +12,11 @@ app.set("view engine", "ejs");
 
 app.use(express.urlencoded({extended : true}));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+    secret: 'Xr!af03SNk@cD@nu',
+    resave: false,
+    saveUninitialized: true,
+}))
 app.set("views", path.join(__dirname, "public/pages"));
 
 const knex = require("knex")({
@@ -26,9 +33,7 @@ const knex = require("knex")({
 
 //TODO: Add a route to display data and accept data to add to the database
 
-// app.get("/", (req, res) => {
-//     res.sendFile(__dirname + "/index.html");
-// });
+
 
 app.get("/signup", (req, res) => {
     res.render(__dirname + "/public/pages/signup.ejs", {message: ""});
@@ -38,6 +43,26 @@ app.get("/login", (req, res) => {
     res.render(__dirname + "/public/pages/login", {message: ""});
 });
 
+app.get("/loggedintest", (req, res) => {
+    if (req.session.user) {
+        res.sendFile(__dirname + "/public/pages/loggedintest.html");
+    } else {
+        res.render(__dirname + "/public/pages/login", {message: "Please login to view this page."});
+    }
+});
+
+app.get('/admintest', (req, res) => {
+    if (req.session.user) {
+        if (req.session.user.role === "admin") {
+            res.sendFile(__dirname + "/public/pages/admintest.html");
+        } else {
+            res.sendFile(__dirname + "/public/pages/notAuthorized.html");
+        }
+    } else {
+        res.render(__dirname + "/public/pages/login", {message: "Please login to view this page."});
+    }
+});
+
 app.post("/login", (req, res) => {
     let username = req.body.username;
     let password = req.body.password;
@@ -45,6 +70,10 @@ app.post("/login", (req, res) => {
     knex.select().from("users").where("username", username).then(user => {
         if (user.length > 0) {
             if (user[0].password === password) {
+                req.session.user = {
+                    username: username,
+                    role: user[0].role
+                }
                 res.sendFile(__dirname + "/public/pages/home.html");
             } else {
                 // If password is incorrect, display error message in login.ejs
@@ -55,6 +84,11 @@ app.post("/login", (req, res) => {
             res.render(__dirname + "/public/pages/login", {message: 'Incorrect username or password.'});
         }
     });
+});
+
+app.get("/logout", (req, res) => {
+    req.session.destroy();
+    res.sendFile(__dirname + "/public/index.html");
 });
 
 app.post("/signup", (req, res) => {
