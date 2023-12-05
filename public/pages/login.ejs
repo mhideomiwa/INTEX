@@ -15,10 +15,25 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
     <!-- Core theme CSS (includes Bootstrap)-->
+    <link rel="stylesheet" href="/css/index.css">
     <link href="../css/login.css" rel="stylesheet" />
     <script src="login.js"></script>
 </head>
 <body>
+    <header>
+        <div>
+            <a href="../index.html"><h1>Provo SMU MH</h1></a>
+        </div>
+        <nav>
+            <a href="../index.html">Home</a>
+            <a href="pages/dashboard.html">Dashboard</a>
+            <a href="pages/survey.html">Survey</a>
+            <a href="pages/resources.html">Resources</a> <!-- Updated link to point to the resources.html file -->
+            <div class="login">
+                <a class="login-button" href="login">Login</a>
+            </div>
+        </nav>
+    </header>
 
 <!--Login boxes-->
     <div class="pageContainer">
@@ -26,7 +41,7 @@
             <h2>Log In</h2>
             <br>
             <div class="logInFormContainer">
-                <%= message %>
+                <div id="ageError" style="color: red;"><%= message %></div>
                 <form action="/login" method="post" class="logInForm" onsubmit="submitForm()">
                     <label for="username">Username</label> <br>
                     <input type="text" id="username" name="username" class="required, logInInput" maxlength="30"> <br>
@@ -37,7 +52,7 @@
                     <input type="submit" id="login" value="Log In" class="logInButton">
                 </form>
             </div>
-            <div class="noAccount">Don't have an account? <a href="signup">Sign up</a> </div>
+            <div class="noAccount">Don't have an account? <a href="signup" class="signUpLink">Sign up</a> </div>
         </div>
     </div>
 

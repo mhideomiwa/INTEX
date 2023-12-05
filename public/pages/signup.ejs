@@ -14,9 +14,26 @@
     <!-- Google fonts-->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="../css/signup.css">
+    
 </head>
 <body>
+
+    <header>
+        <div>
+            <a href="../index.html"><h1>Provo SMU MH</h1></a>
+        </div>
+        <nav>
+            <a href="../index.html">Home</a>
+            <a href="pages/dashboard.html">Dashboard</a>
+            <a href="pages/survey.html">Survey</a>
+            <a href="pages/resources.html">Resources</a> <!-- Updated link to point to the resources.html file -->
+            <div class="login">
+                <a class="login-button" href="../login">Login</a>
+            </div>
+        </nav>
+    </header>
 
 <!--Signup boxes-->
     <div class="pageContainer">
@@ -47,7 +64,7 @@
                     <input type="submit" id="signupbutton" value="Sign Up" class="signUpButton" disabled="disabled">
                 </form>
             </div>
-            <div class="hasAccount">Already have an account? <a href="login">Log in</a> </div>
+            <div class="hasAccount">Already have an account? <a href="login" class="logInLink">Log in</a> </div>
         </div>
     </div>
 
