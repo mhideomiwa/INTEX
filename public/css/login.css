@@ -2,7 +2,7 @@
 
 body {
     font-family: 'Barlow', sans-serif;
-    background-color: #47433c;
+    background-color: #44403b;
 }
 
 
@@ -49,20 +49,21 @@ body {
 .logInButton {
     width: 100%;
     margin-top: 20px;
-    background-color: #A8D0E6;
+    background-color: #c44601;
     border-radius: 7px;
     border: none;
     padding: 7px;
     color: #fff;
     text-decoration: none;
-    transition: background-color 0.3s;
+    transition: background-color 0.5s;
     font-family: 'Barlow', sans-serif;
     font-size: 18px;
 
 }
 
 .logInButton:hover {
-    background-color: #374785; /* Darker blue on hover */
+    background-color: #8babf1; /* Darker blue on hover */
+    color: black;
 }
 
 .noAccount {
@@ -74,17 +75,18 @@ body {
 .signUpLink {
     display: inline-block;
     padding: 7px;
-    background-color: #374785;
-    color: #fff;
+    background-color: #054fb9;
+    color: white;
     text-decoration: none;
     border: none;
     border-radius: 7px;
-    transition: background-color 0.3s;
+    transition: background-color 0.5s;
     font-family: 'Barlow', sans-serif;
     font-size: 16px;
     margin-left: 20px;
 }
 
 .signUpLink:hover {
-    background-color: #A8D0E6;
+    background-color: #8babf1; /* Darker blue on hover */
+    color: black;
 }
