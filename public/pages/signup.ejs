@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Sign Up</title>
-    <script src="signup.js"></script>
+    <script src="pages/signup.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
@@ -14,9 +14,7 @@
     <!-- Google fonts-->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
-    <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="../css/styles.css" rel="stylesheet" />
-    <link href="../css/signup.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="../css/signup.css">
 </head>
 <body>
 
@@ -26,7 +24,8 @@
             <h2>Sign Up</h2>
             <br>
             <div class="signUpFormContainer">
-                <form action="/createUser" method="post" class="signUpForm">
+                <form action="/signup" method="post" class="signUpForm">
+                    <%= message %><br>
                     <label for="user_first_name">First Name</label> <br>
                     <input type="text" id="user_first_name" name="user_first_name" class="required, signUpInput" maxlength="30" onkeyup="validateFirstName()"> <br>
                     <span id="firstNameMessage"></span>
