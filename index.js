@@ -31,7 +31,7 @@ const knex = require("knex")({
 // });
 
 app.get("/signup", (req, res) => {
-    res.sendFile(__dirname + "/public/pages/signup.html");
+    res.render(__dirname + "/public/pages/signup.ejs", {message: ""});
 });
 
 app.get("/login", (req, res) => {
@@ -58,7 +58,38 @@ app.post("/login", (req, res) => {
 });
 
 app.post("/signup", (req, res) => {
+    let firstname = req.body.user_first_name;
+    let lastname = req.body.user_last_name;
+    let username = req.body.username;
+    let password = req.body.password;
+    let email = req.body.user_email;
 
+    knex("users").select().where("username", username).then(user => {
+        if (user.length > 0) {
+            // If username already exists, display error message in signup.ejs
+            res.render(__dirname + "/public/pages/signup", {message: 'Username already exists.'});
+        }
+        else if(firstname === "" || lastname === "" || username === "" || password === "" || email === "") {
+            // If any field is empty, display error message in signup.ejs
+            res.render(__dirname + "/public/pages/signup", {message: 'Please fill in all fields.'});
+        }
+        else if (firstname.length > 30 || lastname.length > 30 || username.length > 30 || password.length > 30 || email.length > 30) {
+            // If any field is longer than 30 characters, display error message in signup.ejs
+            res.render(__dirname + "/public/pages/signup", {message: 'Please make sure all fields are less than 30 characters.'});
+        }
+        else {
+            knex("users").insert({
+                first_name: firstname,
+                last_name: lastname,
+                username: username,
+                password: password,
+                email: email,
+                role: "user"
+            }).then(user => {
+                res.sendFile(__dirname + "/public/pages/home.html");
+            });
+        }
+    });
 
 })
 app.listen(port, () => console.log("Listening on port: " + port + "."));

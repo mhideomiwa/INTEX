@@ -1,6 +1,8 @@
 // //TODO: Connect everything to the databases
 //
 //Variables for each field
+
+
 let fNameValid = false;
 let lNameValid = false;
 let emailValid = false;
@@ -141,12 +143,9 @@ function validatePasswordConfirm(){
     enableSubmit();
 }
 
-//Function to validate all fields
-function validateAll(){
-    validateFirstName();
-    validateLastName();
-    validateEmail();
-    validateUsername();
-    validatePassword();
-    validatePasswordConfirm();
+
+
+function test () {
+    console.log("test");
+    alert("test");
 }
