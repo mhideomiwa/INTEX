@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500&display=swap');
         body {
-            font-family: 'Barlow', sans-serif;
+            font-family: 'Avenir', sans-serif;
             margin: 0px;
             padding: 0px;
             background-color: #f4f4f4;
@@ -18,7 +18,7 @@
         }
 
         form {
-            font-family: 'Barlow', sans-serif;
+            font-family: 'Avenir', sans-serif;
             max-width: 600px;
             margin: auto;
             background-color: #fff;
@@ -41,14 +41,14 @@
             border: 1px solid #ccc;
             border-radius: 4px;
             box-sizing: border-box;
-            font-family: 'Barlow', sans-serif;
+            font-family: 'Avenir', sans-serif;
         }
 
         input[type="range"] {
             width: 100%;
             margin-top: 5px;
             margin-bottom: 15px;
-            font-family: 'Barlow', sans-serif;
+            font-family: 'Avenir', sans-serif;
         }
 
         button {
@@ -58,7 +58,7 @@
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            font-family: 'Barlow', sans-serif;
+            font-family: 'Avenir', sans-serif;
         }
 
         button:hover {
