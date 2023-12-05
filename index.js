@@ -24,7 +24,7 @@ const knex = require("knex")({
     connection: {
         host: process.env.RDS_HOSTNAME || 'localhost',
         user: process.env.RDS_USERNAME || 'postgres',
-        password: process.env.RDS_PASSWORD || 'C1$$&!Xi46RRu0HS',
+        password: process.env.RDS_PASSWORD || 'thuet12345',
         database: process.env.RDS_DB_NAME || 'users',
         port: process.env.RDS_PORTv|| 5432,
         ssl: process.env.DB_SSL ? { rejectUnauthorized: false } : false
@@ -126,4 +126,41 @@ app.post("/signup", (req, res) => {
     });
 
 })
+
+app.post("/submitSurvey", (req, res) => {
+    const surveyData = {
+        age: req.body.age,
+        gender: req.body.gender,
+        relationshipStatus: req.body.relationshipStatus,
+        occupationStatus: req.body.occupationStatus,
+        affiliatedOrganizations: req.body.affiliatedOrganizations,
+        useSocialMedia: req.body.useSocialMedia,
+        socialMediaPlatforms: req.body.socialMediaPlatforms,
+        timeOnSocialMedia: req.body.timeOnSocialMedia,
+        question9: req.body.question9,
+        question10: req.body.question10,
+        question11: req.body.question11,
+        question12: req.body.question12,
+        question13: req.body.question13,
+        question14: req.body.question14,
+        question15: req.body.question15,
+        question16: req.body.question16,
+        question17: req.body.question17,
+        question18: req.body.question18,
+        question19: req.body.question19,
+        question20: req.body.question20
+    };
+
+    // Insert survey data into the database
+    knex("survey")
+        .insert(surveyData)
+        .then(() => {
+            res.send("Survey submitted successfully!");
+        })
+        .catch((error) => {
+            console.error("Error submitting survey:", error);
+            res.status(500).send("Internal Server Error");
+        });
+});
+
 app.listen(port, () => console.log("Listening on port: " + port + "."));
