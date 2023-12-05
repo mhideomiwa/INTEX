@@ -6,18 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/survey.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
     <title>Survey - Provo SMU MH</title>
-</head>
-<body>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+</head>
+<body>
 
     <!-- Initialize Select2 for the affiliatedOrganizations dropdown -->
     <script>
-        $(document).ready(function() {
-            $('#affiliatedOrganizations').select2();
-            $('#socialMediaPlatforms').select2();
-        });
+
         function validateAge(input) {
         var age = input.value;
         var ageError = document.getElementById("ageError");
@@ -92,7 +90,7 @@
             <select id="relationshipStatus" name="relationshipStatus" required>
                 <option value="">Select Relationship Status</option>
                 <option value="divorced">Divorced</option>
-                <option value="inRelationship">In a Relationship</option>
+                <option value="inRelationship">In a relationship</option>
                 <option value="married">Married</option>
                 <option value="single">Single</option>
             </select>

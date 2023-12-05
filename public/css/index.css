@@ -94,3 +94,6 @@ nav a:hover {
 .survey-link:hover {
     background-color: #5c554a;
 }
+
+a {color: white;
+    text-decoration: none;}
