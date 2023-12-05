@@ -45,7 +45,7 @@
     </header>
     <div>
         <h2>Take Our Social Media Usage Survey</h2>
-        <form id="surveyForm" onsubmit="return validateForm()">
+        <form id="surveyForm" onsubmit="return validateForm()" action="/submitSurvey" method="post">
             <label for="age">Age:*</label>
             <input type="text" id="age" name="age" maxlength="3" oninput="validateAge(this)" required>
             <div id="ageError" style="color: red;"></div>
