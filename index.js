@@ -4,6 +4,8 @@ const session = require("express-session");
 
 let app = express();
 
+const bcrypt = require("bcrypt");
+
 let path = require("path");
 
 const port = process.env.PORT || 3000;
@@ -77,11 +79,11 @@ app.post("/login", (req, res) => {
                 res.sendFile(__dirname + "/public/pages/home.html");
             } else {
                 // If password is incorrect, display error message in login.ejs
-                res.render( __dirname + "/public/pages/login", {message: 'Incorrect username or password.'});
+                res.render(__dirname + "/public/pages/login", { message: 'Incorrect username or password.' });
             }
         } else {
             // If username doesn't exist, display error message in login.ejs
-            res.render(__dirname + "/public/pages/login", {message: 'Incorrect username or password.'});
+            res.render(__dirname + "/public/pages/login", { message: 'Incorrect username or password.' });
         }
     });
 });
