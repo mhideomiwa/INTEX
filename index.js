@@ -35,24 +35,24 @@ app.get("/signup", (req, res) => {
 });
 
 app.get("/login", (req, res) => {
-    res.render(__dirname + "/public/pages/login");
+    res.render(__dirname + "/public/pages/login", {message: ""});
 });
 
 app.post("/login", (req, res) => {
     let username = req.body.username;
     let password = req.body.password;
-    let message = 'Username or password is incorrect.'
+
     knex.select().from("users").where("username", username).then(user => {
         if (user.length > 0) {
             if (user[0].password === password) {
-                res.render("/public/pages/home.html");
+                res.sendFile(__dirname + "/public/pages/home.html");
             } else {
                 // If password is incorrect, display error message in login.ejs
-                res.render( "/public/pages/login", {message});
+                res.render( __dirname + "/public/pages/login", {message: 'Incorrect username or password.'});
             }
         } else {
             // If username doesn't exist, display error message in login.ejs
-            res.render("/public/pages/login", message);
+            res.render(__dirname + "/public/pages/login", {message: 'Incorrect username or password.'});
         }
     });
 });
