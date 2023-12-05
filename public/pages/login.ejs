@@ -17,6 +17,7 @@
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="../css/styles.css" rel="stylesheet" />
     <link href="../css/login.css" rel="stylesheet" />
+    <script src="login.js"></script>
 </head>
 <body>
 
@@ -26,7 +27,8 @@
             <h2>Log In</h2>
             <br>
             <div class="logInFormContainer">
-                <form action="#" method="post" class="logInForm" onsubmit="submitForm()">
+                <%= message %>
+                <form action="/login" method="post" class="logInForm" onsubmit="submitForm()">
                     <label for="username">Username</label> <br>
                     <input type="text" id="username" name="username" class="required, logInInput" maxlength="30"> <br>
                     <span id="userNameMessage"></span>
