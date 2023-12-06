@@ -202,7 +202,7 @@ app.post('/submitSurvey', (req, res) => {
                         });
                     }
 
-                    res.redirect("/");
+                    res.redirect("/public/pages/thankYou.html");
                 }
         })
     });
