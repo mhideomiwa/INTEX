@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<label><b>Survey Information:</b></label>
+<br><br>
+<table style="width: 100%; background-color: antiquewhite; border: 1px solid black;">
+    <thead style="background-color: cornflowerblue; color: white;">
+    <tr>
+        <th style="text-align: left;">Survey Id</th>
+        <th style="text-align: left;">Timestamp</th>
+        <th style="text-align: left;">Age</th>
+        <th style="text-align: left;">Gender</th>
+        <th style="text-align: left;">Relationship</th>
+        <th style="text-align: left;">Occupation</th>
+        <th style="text-align: left;">Associated Organizations</th>
+        <th style="text-align: left;">Use Social Media</th>
+        <th style="text-align: left;">Platforms Used</th>
+        <th style="text-align: left;">Time Spent</th>
+        <th style="text-align: left;">No Specific Purpose</th>
+        <th style="text-align: left;">Distracted By Social Media</th>
+        <th style="text-align: left;">Restless Without Social Media</th>
+        <th style="text-align: left;">Easily Distracted</th>
+        <th style="text-align: left;">Bothered by Worries</th>
+        <th style="text-align: left;">Difficulty Concentrating</th>
+        <th style="text-align: left;">Compare with Successful People</th>
+        <th style="text-align: left;">Feelings about Comparisons</th>
+        <th style="text-align: left;">Validation from Social Media</th>
+        <th style="text-align: left;">Feeling Depressed or Down</th>
+        <th style="text-align: left;">Fluctuation in Interests</th>
+        <th style="text-align: left;">Sleep Issues</th>
+        <th style="text-align: left;">Origin</th>
+    </tr>
+    </thead>
+    <tbody style="font-family: Arial; font-size: 9pt;">
+    <% for (let iCount = 0; iCount < surveyData.length; iCount++) { %>
+        <tr>
+            <td><%= surveyData[iCount].survey_id %></td>
+            <td><%= surveyData[iCount].survey_time %></td>
+            <td><%= surveyData[iCount].age %></td>
+            <td><%= surveyData[iCount].gender_description%></td>
+            <td><%= surveyData[iCount].relationship_description %></td>
+            <td><%= surveyData[iCount].occupation_description %></td>
+            <td><%= surveyData[iCount].platform_name %></td>
+            <td><%= surveyData[iCount].use_social_media %></td>
+            <td><%= surveyData[iCount].platform_name %></td>
+            <td><%= surveyData[iCount].time_description %></td>
+            <td><%= surveyData[iCount].no_specific_purpose %></td>
+            <td><%= surveyData[iCount].distracted_by_social_media %></td>
+            <td><%= surveyData[iCount].restless_without_social_media %></td>
+            <td><%= surveyData[iCount].easily_distracted %></td>
+            <td><%= surveyData[iCount].bothered_by_worries %></td>
+            <td><%= surveyData[iCount].concentration_difficulty %></td>
+            <td><%= surveyData[iCount].compare_with_successful_people %></td>
+            <td><%= surveyData[iCount].feel_about_comparisons %></td>
+            <td><%= surveyData[iCount].validation_from_social_media %></td>
+            <td><%= surveyData[iCount].depressed_or_down %></td>
+            <td><%= surveyData[iCount].interest_fluctuation %></td>
+            <td><%= surveyData[iCount].sleep_issues %></td>
+            <td><%= surveyData[iCount].origin %></td>
+
+
+
+
+        </tr>
+    <% } %>
+    </tbody>
+</table>
+<br><br>
+<!--<form action="/addCountry" method="GET">-->
+<!--    <button type="submit">Add Country</button>-->
+<!--</form>-->
+</body>
+</html>
