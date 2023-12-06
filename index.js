@@ -176,27 +176,7 @@ app.post('/submitSurvey', (req, res) => {
         sleep_issues: question20,
         origin: 'Provo'
     }).then(recordNumber => {
-        knex.select("survey_id").from("survey").where({
-            survey_time: surveytime,
-            age: age,
-            gender_id: gender,
-            relationship_id: relationshipStatus,
-            occupation_id: occupationStatus,
-            use_social_media: useSocialMedia,
-            time_id: timeOnSocialMedia,
-            no_specific_purpose: question9,
-            distracted_by_social_media: question10,
-            restless_without_social_media: question11,
-            easily_distracted: question12,
-            bothered_by_worries: question13,
-            concentration_difficulty: question14,
-            compare_with_successful_people: question15,
-            feel_about_comparisons: question16,
-            validation_from_social_media: question17,
-            depressed_or_down: question18,
-            interest_fluctuation: question19,
-            sleep_issues: question20,
-            origin: 'Provo'}).then(surveyData => {
+        knex.select("survey_id").from("survey").where("survey_time", surveytime).andWhere("age", age).andWhere("gender_id", gender).andWhere("relationship_id", relationshipStatus).then(surveyData => {
                 if (surveyData.length > 0) {
                     const surveyId = surveyData[0].survey_id;
 
@@ -219,6 +199,8 @@ app.post('/submitSurvey', (req, res) => {
                             console.log("Survey Organizations Inserted");
                         });
                     }
+
+                    res.redirect("/");
                 }
         })
     });
