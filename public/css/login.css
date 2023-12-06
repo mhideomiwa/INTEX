@@ -33,6 +33,7 @@ body {
     justify-content: center;
     align-items: center;
     color: #2b2823;
+    font-size: 16px;
 }
 
 .logInForm {
@@ -60,6 +61,10 @@ body {
     font-size: 18px;
     cursor: pointer;
 
+}
+
+h2 {
+    font-size: 30px;
 }
 
 .logInButton:hover {
