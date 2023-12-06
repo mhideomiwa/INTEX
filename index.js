@@ -19,6 +19,8 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
 }))
+
+
 app.set("views", path.join(__dirname, "public/pages"));
 
 app.use(express.urlencoded({extended : true}));
@@ -48,7 +50,25 @@ app.get("/login", (req, res) => {
     res.render(__dirname + "/public/pages/login", {message: ""});
 });
 
+app.get("/loggedintest", (req, res) => {
+    if (req.session.user) {
+        res.sendFile(__dirname + "/public/pages/loggedintest.html");
+    } else {
+        res.render(__dirname + "/public/pages/login", {message: "Please login to view this page."});
+    }
+});
 
+app.get('/admintest', (req, res) => {
+    if (req.session.user) {
+        if (req.session.user.role === "admin") {
+            res.sendFile(__dirname + "/public/pages/admintest.html");
+        } else {
+            res.sendFile(__dirname + "/public/pages/notAuthorized.html");
+        }
+    } else {
+        res.render(__dirname + "/public/pages/login", {message: "Please login to view this page."});
+    }
+});
 
 app.post("/login", (req, res) => {
     let username = req.body.username;
@@ -168,24 +188,47 @@ app.post('/submitSurvey', (req, res) => {
                 if (surveyData.length > 0) {
                     const surveyId = surveyData[0].survey_id;
 
-                    for (let i = 0; i < socialMediaPlatforms.length; i++) {
+                    if(socialMediaPlatforms[0] === '10') {
                         knex("individual_platforms").insert({
                             survey_id: surveyId,
-                            platform_id: socialMediaPlatforms[i],
-                            platform_number: i+1
+                            platform_id: socialMediaPlatforms[0],
+                            platform_number: 0
 
                         }).then(surveySocialMedia => {
                             console.log("Survey Social Media Inserted");
                         });
+                    } else {
+                        for (let i = 0; i < socialMediaPlatforms.length; i++) {
+                            knex("individual_platforms").insert({
+                                survey_id: surveyId,
+                                platform_id: socialMediaPlatforms[i],
+                                platform_number: i+1
+
+                            }).then(surveySocialMedia => {
+                                console.log("Survey Social Media Inserted");
+                            });
+                        }
                     }
-                    for (let i = 0; i < affiliatedOrganizations.length; i++) {
+
+
+                    if(affiliatedOrganizations[0] === '6') {
                         knex("individual_organizations").insert({
                             survey_id: surveyId,
-                            organization_id: affiliatedOrganizations[i],
-                            organization_number: i+1
+                            organization_id: affiliatedOrganizations[0],
+                            organization_number: 0
                         }).then(surveyOrganizations => {
                             console.log("Survey Organizations Inserted");
                         });
+                    } else {
+                        for (let i = 0; i < affiliatedOrganizations.length; i++) {
+                            knex("individual_organizations").insert({
+                                survey_id: surveyId,
+                                organization_id: affiliatedOrganizations[i],
+                                organization_number: i+1
+                            }).then(surveyOrganizations => {
+                                console.log("Survey Organizations Inserted");
+                            });
+                        }
                     }
 
                     res.redirect("/");
