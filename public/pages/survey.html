@@ -10,6 +10,7 @@
     <title>Survey - Provo SMU MH</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <link rel="stylesheet" href="/css/navbar.css">
 </head>
 <body>
 
@@ -31,15 +32,20 @@
 </script>
 <header>
     <div>
-        <a href="../index.html"><h1>Provo SMU MH</h1></a>
+        <a href="/home"><h1>Provo SMU MH</h1></a>
     </div>
     <nav>
-        <a href="../index.html">Home</a>
-        <a href="dashboard.html">Dashboard</a>
-        <a href="survey.html">Survey</a>
-        <a href="resources.html">Resources</a>
-        <div class="login">
-            <a class="login-button" href="../login">Login</a>
+        <a href="/home">Home</a>
+        <a href="pages/dashboard.html">Dashboard</a>
+        <a href="pages/survey.html">Survey</a>
+        <a href="pages/resources.html">Resources</a> <!-- Updated link to point to the resources.html file -->
+        <!--            dropdown that -->
+        <div class="dropdown">
+            <a href="#" class="login-button">My Profile</a>
+            <div class="dropdown-content">
+                <a href="/logout">Logout</a>
+                <a href="/viewProfile">View Profile</a>
+            </div>
         </div>
     </nav>
 </header>
