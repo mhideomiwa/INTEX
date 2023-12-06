@@ -34,6 +34,7 @@ const knex = require("knex")({
 });
 
 //TODO: Add a route to display data and accept data to add to the database
+//TODO: Clean this up Miwa
 
 
 
@@ -128,4 +129,100 @@ app.post("/signup", (req, res) => {
     });
 
 })
+
+app.post('/submitSurvey', (req, res) => {
+    let age = req.body.age;
+    let gender = req.body.gender;
+    let relationshipStatus = req.body.relationshipStatus;
+    let occupationStatus = req.body.occupationStatus;
+    let affiliatedOrganizations = req.body.affiliatedOrganizations;
+    let useSocialMedia = req.body.useSocialMedia;
+    let socialMediaPlatforms = req.body.socialMediaPlatforms;
+    let timeOnSocialMedia = req.body.timeOnSocialMedia;
+    let question9 = req.body.question9;
+    let question10 = req.body.question10;
+    let question11 = req.body.question11;
+    let question12 = req.body.question12;
+    let question13 = req.body.question13;
+    let question14 = req.body.question14;
+    let question15 = req.body.question15;
+    let question16 = req.body.question16;
+    let question17 = req.body.question17;
+    let question18 = req.body.question18;
+    let question19 = req.body.question19;
+    let question20 = req.body.question20;
+    let surveytime = new Date()
+
+
+    knex("survey").insert({
+        survey_time: surveytime,
+        age: age,
+        gender_id: gender,
+        relationship_id: relationshipStatus,
+        occupation_id: occupationStatus,
+        use_social_media: useSocialMedia,
+        time_id: timeOnSocialMedia,
+        no_specific_purpose: question9,
+        distracted_by_social_media: question10,
+        restless_without_social_media: question11,
+        easily_distracted: question12,
+        bothered_by_worries: question13,
+        concentration_difficulty: question14,
+        compare_with_successful_people: question15,
+        feel_about_comparisons: question16,
+        validation_from_social_media: question17,
+        depressed_or_down: question18,
+        interest_fluctuation: question19,
+        sleep_issues: question20,
+        origin: 'Provo'
+    }).then(recordNumber => {
+        knex.select("survey_id").from("survey").where({
+            survey_time: surveytime,
+            age: age,
+            gender_id: gender,
+            relationship_id: relationshipStatus,
+            occupation_id: occupationStatus,
+            use_social_media: useSocialMedia,
+            time_id: timeOnSocialMedia,
+            no_specific_purpose: question9,
+            distracted_by_social_media: question10,
+            restless_without_social_media: question11,
+            easily_distracted: question12,
+            bothered_by_worries: question13,
+            concentration_difficulty: question14,
+            compare_with_successful_people: question15,
+            feel_about_comparisons: question16,
+            validation_from_social_media: question17,
+            depressed_or_down: question18,
+            interest_fluctuation: question19,
+            sleep_issues: question20,
+            origin: 'Provo'}).then(surveyData => {
+                if (surveyData.length > 0) {
+                    const surveyId = surveyData[0].survey_id;
+
+                    for (let i = 0; i < socialMediaPlatforms.length; i++) {
+                        knex("individual_platforms").insert({
+                            survey_id: surveyId,
+                            platform_id: socialMediaPlatforms[i],
+                            platform_number: i+1
+
+                        }).then(surveySocialMedia => {
+                            console.log("Survey Social Media Inserted");
+                        });
+                    }
+                    for (let i = 0; i < affiliatedOrganizations.length; i++) {
+                        knex("individual_organizations").insert({
+                            survey_id: surveyId,
+                            organization_id: affiliatedOrganizations[i],
+                            organization_number: i+1
+                        }).then(surveyOrganizations => {
+                            console.log("Survey Organizations Inserted");
+                        });
+                    }
+                }
+        })
+    });
+});
+
+
 app.listen(port, () => console.log("Listening on port: " + port + "."));
