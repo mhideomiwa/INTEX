@@ -21,6 +21,8 @@ app.use(session({
 }))
 app.set("views", path.join(__dirname, "public/pages"));
 
+app.use(express.urlencoded({extended : true}));
+
 const knex = require("knex")({
     client: "pg",
     connection: {
