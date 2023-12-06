@@ -182,7 +182,7 @@ app.post('/submitSurvey', (req, res) => {
         depressed_or_down: question18,
         interest_fluctuation: question19,
         sleep_issues: question20,
-        origin: 'Provo'
+        origin: from
     }).then(recordNumber => {
         knex.select("survey_id").from("survey").where("survey_time", surveytime).andWhere("age", age).andWhere("gender_id", gender).andWhere("relationship_id", relationshipStatus).then(surveyData => {
                 if (surveyData.length > 0) {
