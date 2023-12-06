@@ -48,25 +48,7 @@ app.get("/login", (req, res) => {
     res.render(__dirname + "/public/pages/login", {message: ""});
 });
 
-app.get("/loggedintest", (req, res) => {
-    if (req.session.user) {
-        res.sendFile(__dirname + "/public/pages/loggedintest.html");
-    } else {
-        res.render(__dirname + "/public/pages/login", {message: "Please login to view this page."});
-    }
-});
 
-app.get('/admintest', (req, res) => {
-    if (req.session.user) {
-        if (req.session.user.role === "admin") {
-            res.sendFile(__dirname + "/public/pages/admintest.html");
-        } else {
-            res.sendFile(__dirname + "/public/pages/notAuthorized.html");
-        }
-    } else {
-        res.render(__dirname + "/public/pages/login", {message: "Please login to view this page."});
-    }
-});
 
 app.post("/login", (req, res) => {
     let username = req.body.username;
@@ -96,6 +78,8 @@ app.get("/logout", (req, res) => {
     res.sendFile(__dirname + "/public/index.html");
 });
 
+
+//Signup post
 app.post("/signup", (req, res) => {
     let firstname = req.body.user_first_name;
     let lastname = req.body.user_last_name;
@@ -132,6 +116,8 @@ app.post("/signup", (req, res) => {
 
 })
 
+
+//Submit Survey post
 app.post('/submitSurvey', (req, res) => {
     let age = req.body.age;
     let gender = req.body.gender;
@@ -207,6 +193,8 @@ app.post('/submitSurvey', (req, res) => {
         })
     });
 });
+
+
 
 
 app.listen(port, () => console.log("Listening on port: " + port + "."));
