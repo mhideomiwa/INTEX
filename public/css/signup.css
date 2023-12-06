@@ -11,7 +11,7 @@ body {
 }
 
 .signUpContainer {
-    margin-top: 100px;
+    margin-top: 50px;
     width: 350px;
     display: flex;
     flex-direction: column;
@@ -31,6 +31,7 @@ body {
     justify-content: center;
     align-items: center;
     color: #2b2823;
+    font-size: 16px;
 }
 
 .signUpForm {
@@ -42,6 +43,10 @@ body {
 
 .signUpInput {
     width: 100%;
+}
+
+h2 {
+    font-size: 35px;
 }
 
 .signUpButton {
