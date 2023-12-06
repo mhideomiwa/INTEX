@@ -46,6 +46,15 @@
 <div>
     <h2>Take Our Social Media Usage Survey</h2>
     <form id="surveyForm" onsubmit="return validateForm()" action="/submitSurvey" method="post">
+
+        <label for="wherefrom">Where are you from:*</label>
+        <select id="from" name="from" required>
+            <option value="Provo">Provo</option>
+            <option value="Plainsville">Plainsville</option>
+           
+
+        </select>
+
         <label for="age">Age:*</label>
         <input type="text" id="age" name="age" maxlength="3" oninput="validateAge(this)" required>
         <div id="ageError" style="color: red;"></div>
@@ -55,22 +64,24 @@
                 $('#affiliatedOrganizations').select2();
                 $('#socialMediaPlatforms').select2();
             });
+            
+    function handleOrganizationSelection(selectElement) {
+    var naOption = document.querySelector('#affiliatedOrganizations option[value="6"]');
+    var isNASelected = naOption.selected;
 
-            function handleOrganizationSelection(selectElement) {
-                var selectedOption = selectElement.value;
-                var affiliatedOrganizations = $('#affiliatedOrganizations');
-
-                // If 'N/A' is selected, clear all other selections
-                if (selectedOption === 'na') {
-                    affiliatedOrganizations.val(['na']);
-                    affiliatedOrganizations.prop('disabled', true);
-                }
-                // If an option other than 'N/A' is selected, clear 'N/A' and enable multi-select
-                else {
-                    affiliatedOrganizations.val(affiliatedOrganizations.val().filter(option => option !== 'na'));
-                    affiliatedOrganizations.prop('disabled', false);
-                }
+    if (isNASelected) {
+        // Clear other selected options if "N/A" is selected
+        for (var i = 0; i < selectElement.options.length; i++) {
+            if (selectElement.options[i].value !== "6") {
+                selectElement.options[i].selected = false;
             }
+        }
+    }
+
+    // Disable multi-select if "N/A" is selected
+    selectElement.multiple = !isNASelected;
+}
+
         </script>
 
 
@@ -123,40 +134,40 @@
             <option value="No">No</option>
         </select>
 
-        <label for="socialMediaPlatforms">What social media platforms do you commonly use? (Select more than one if
-            applicable)*</label>
-        <select id="socialMediaPlatforms" name="socialMediaPlatforms[]" multiple="multiple" required>
-            <option value="1">Facebook</option>
-            <option value="3">Instagram</option>
-            <option value="2">Twitter</option>
-            <option value="4">YouTube</option>
-            <option value="5">Discord</option>
-            <option value="6">Reddit</option>
-            <option value="8">TikTok</option>
-            <option value="7">Pinterest</option>
-            <option value="9">Snapchat</option>
-            <option value="10">N/A</option>
-        </select>
+        <label for="socialMediaPlatforms">What social media platforms do you commonly use? (Select more than one if applicable)*</label>
+        <select id="socialMediaPlatforms" name="socialMediaPlatforms[]" multiple="multiple" onchange="handleSocialMediaSelection(this)" required>
+            
+    <option value="1">Facebook</option>
+    <option value="3">Instagram</option>
+    <option value="2">Twitter</option>
+    <option value="4">YouTube</option>
+    <option value="5">Discord</option>
+    <option value="6">Reddit</option>
+    <option value="8">TikTok</option>
+    <option value="7">Pinterest</option>
+    <option value="9">Snapchat</option>
+    <option value="10">N/A</option>
+</select>
 
-        <script>
-            function toggleSocialMediaPlatforms() {
-                var useSocialMediaSelect = document.getElementById("useSocialMedia");
-                var socialMediaPlatformsSelect = document.getElementById("socialMediaPlatforms");
-
-                if (useSocialMediaSelect.value === "no") {
-                    // Remove "N/A" from the options list
-                    var naOption = socialMediaPlatformsSelect.querySelector('option[value="na"]');
-                    naOption.style.display = "none";
-                    socialMediaPlatformsSelect.value = ["na"]; // Set to N/A
-                    socialMediaPlatformsSelect.disabled = true;
-                } else {
-                    // Re-add "N/A" to the options list
-                    var naOption = socialMediaPlatformsSelect.querySelector('option[value="na"]');
-                    naOption.style.display = ""; // Show the "N/A" option
-                    socialMediaPlatformsSelect.disabled = false;
+<script>
+    function handleSocialMediaSelection(selectElement) {
+        var naOption = document.querySelector('#socialMediaPlatforms option[value="10"]');
+        var isNASelected = naOption.selected;
+    
+        if (isNASelected) {
+            // Unselect other options if "N/A" is selected
+            for (var i = 0; i < selectElement.options.length; i++) {
+                if (selectElement.options[i].value !== "10") {
+                    selectElement.options[i].selected = false;
                 }
             }
-        </script>
+        }
+    
+        // Disable multi-select if "N/A" is selected
+        selectElement.multiple = !isNASelected;
+    }
+    </script>
+
 
         <label for="timeOnSocialMedia">Average Time You Spend on Social Media in a Day:*</label>
         <select id="timeOnSocialMedia" name="timeOnSocialMedia" required>
