@@ -1,4 +1,4 @@
-<!-- File: index.html -->
+<!-- File: index.ejs -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,20 +10,7 @@
 </head>
 <body>
 
-    <header>
-        <div>
-            <a href="../index.html"><h1>Provo SMU MH</h1></a>
-        </div>
-        <nav>
-            <a href="../index.html">Home</a>
-            <a href="pages/dashboard.html">Dashboard</a>
-            <a href="pages/survey.html">Survey</a>
-            <a href="pages/resources.html">Resources</a> <!-- Updated link to point to the resources.html file -->
-            <div class="login">
-                <a class="login-button" href="login">Login</a>
-            </div>
-        </nav>
-    </header>
+    <%- navbar %>
 
     <div class="welcome-block">
         <h2>Welcome to Provo Social Media Usage and Mental Health </h2>
@@ -37,7 +24,7 @@
     <div class="purpose-block">
         <h2>Our Purpose</h2>
         <p>At Provo SMU MH, we are dedicated to exploring the impact of social media on mental health. Our mission is to provide insights, resources, and strategies to promote a balanced and positive digital experience. Join us in navigating the intersection of technology and well-being for a healthier online presence.</p>
-        <a class="survey-link" href="pages/survey.html">Take our Survey</a>
+        <a class="survey-link" href="pages/survey.ejs">Take our Survey</a>
     </div>
 
 </body>

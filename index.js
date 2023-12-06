@@ -25,6 +25,8 @@ app.set("views", path.join(__dirname, "public/pages"));
 
 app.use(express.urlencoded({extended : true}));
 
+
+//Knex setup
 const knex = require("knex")({
     client: "pg",
     connection: {
@@ -37,37 +39,36 @@ const knex = require("knex")({
     }
 });
 
+const { employeenavbar, guestnavbar, adminnavbar, usernavbar } = require("./public/modules/navbars.js");
+
 //TODO: Add a route to display data and accept data to add to the database
 //TODO: Clean this up Miwa
 
 
+//Baser Route
+app.get("/", (req, res) => {
+    if (req.session.user) {
+        if (req.session.user.role === "admin") {
+            res.render(__dirname + "/public/index.ejs", {navbar: adminnavbar});
+        }
+        else if (req.session.user.role === "employee") {
+            res.render(__dirname + "/public/index.ejs", {navbar: employeenavbar});
+        }
+        else {
+            res.render(__dirname + "/public/index.ejs", {navbar: usernavbar});
+        }
+    } else {
+        res.render(__dirname + "/public/index.ejs", {navbar: guestnavbar});
+    }
+});
 
+//Login/signup routes
 app.get("/signup", (req, res) => {
-    res.render(__dirname + "/public/pages/signup.ejs", {message: ""});
+    res.render(__dirname + "/public/pages/signup.ejs", {message: "", navbar: guestnavbar});
 });
 
 app.get("/login", (req, res) => {
-    res.render(__dirname + "/public/pages/login", {message: ""});
-});
-
-app.get("/loggedintest", (req, res) => {
-    if (req.session.user) {
-        res.sendFile(__dirname + "/public/pages/loggedintest.html");
-    } else {
-        res.render(__dirname + "/public/pages/login", {message: "Please login to view this page."});
-    }
-});
-
-app.get('/admintest', (req, res) => {
-    if (req.session.user) {
-        if (req.session.user.role === "admin") {
-            res.sendFile(__dirname + "/public/pages/admintest.html");
-        } else {
-            res.sendFile(__dirname + "/public/pages/notAuthorized.html");
-        }
-    } else {
-        res.render(__dirname + "/public/pages/login", {message: "Please login to view this page."});
-    }
+    res.render(__dirname + "/public/pages/login", {message: "", navbar: guestnavbar});
 });
 
 app.post("/login", (req, res) => {
@@ -82,13 +83,13 @@ app.post("/login", (req, res) => {
                     role: user[0].role
                 }
                 if (user[0].role === "admin") {
-                    res.render(__dirname + "/public/pages/adminhome.ejs");
+                    res.render(__dirname + "/public/index.ejs", {navbar: adminnavbar});
                 }
                 else if (user[0].role === "employee") {
-                    res.render(__dirname + "/public/pages/employeehome.ejs");
+                    res.render(__dirname + "/public/index.ejs", {navbar: employeenavbar});
                 }
                 else {
-                    res.render(__dirname + "/public/pages/userhome.ejs");
+                    res.render(__dirname + "/public/index.ejs", {navbar: usernavbar});
                 }
             } else {
                 // If password is incorrect, display error message in login.ejs
@@ -101,57 +102,26 @@ app.post("/login", (req, res) => {
     });
 });
 
-app.get("/adminhome", (req, res) => {
-    if (req.session.user) {
-        if (req.session.user.role === "admin") {
-            res.render(__dirname + "/public/pages/adminhome.ejs");
-        } else {
-            res.sendFile(__dirname + "/public/pages/notAuthorized.html");
-        }
-    } else {
-        res.render(__dirname + "/public/pages/login", {message: "Please login to view this page."});
-    }
-});
-
-app.get("/employeehome", (req, res) => {
-    if (req.session.user) {
-        if (req.session.user.role === "admin" || req.session.user.role === 'employee') {
-            res.sendFile(__dirname + "/public/pages/employeehome.ejs");
-        } else {
-            res.sendFile(__dirname + "/public/pages/notAuthorized.html");
-        }
-    } else {
-        res.render(__dirname + "/public/pages/login", {message: "Please login to view this page."});
-    }
-});
-
-app.get("/userhome", (req, res) => {
-    if (req.session.user) {
-        res.sendFile(__dirname + "/public/pages/userhome.ejs");
-    } else {
-        res.render(__dirname + "/public/pages/login", {message: "Please login to view this page."});
-    }
-});
 
 app.get("/logout", (req, res) => {
     req.session.destroy();
-    res.sendFile(__dirname + "/public/index.html");
+    res.render(__dirname + "/public/index.ejs", {navbar: guestnavbar});
 });
 
-
+//Home routes
 app.get("/home", (req, res) => {
     if (req.session.user) {
         if (req.session.user.role === "admin") {
-            res.render(__dirname + "/public/pages/adminhome.ejs");
+            res.render(__dirname + "/public/index.ejs", {navbar: adminnavbar});
         }
         else if (req.session.user.role === "employee") {
-            res.render(__dirname + "/public/pages/employeehome.ejs");
+            res.render(__dirname + "/public/index.ejs", {navbar: employeenavbar});
         }
         else {
-            res.render(__dirname + "/public/pages/userhome.ejs");
+            res.render(__dirname + "/public/index.ejs", {navbar: usernavbar});
         }
     } else {
-        res.sendFile(__dirname + "/public/index.html");
+        res.render(__dirname + "/public/index.ejs", {navbar: guestnavbar});
     }
 })
 
@@ -348,6 +318,53 @@ app.get("/surveyResults", (req, res) => {
         }
     } else {
         res.render(__dirname + "/public/pages/login", {message: "Please login to view this page."});
+    }
+});
+
+//Other page routes with authentication
+app.get('/dashboard', (req, res) => {
+    if (req.session.user === 'admin') {
+        res.render(__dirname + "/public/pages/dashboard.ejs", {navbar: adminnavbar});
+    }
+    else if (req.session.user === 'employee') {
+        res.render(__dirname + "/public/pages/dashboard.ejs", {navbar: employeenavbar});
+    }
+    else if (req.session.user === 'user'){
+        res.render(__dirname + "/public/pages/dashboard.ejs", {navbar: usernavbar});
+    }
+    else {
+        res.render(__dirname + "/public/pages/dashboard.ejs", {navbar: guestnavbar});
+    }
+})
+
+app.get('/survey', (req, res) => {
+    if (req.session.user === 'admin') {
+        res.render(__dirname + "/public/pages/survey.ejs", {navbar: adminnavbar});
+    }
+    else if (req.session.user === 'employee') {
+        res.render(__dirname + "/public/pages/survey.ejs", {navbar: employeenavbar});
+    }
+    else if (req.session.user === 'user') {
+        res.render(__dirname + "/public/pages/survey.ejs", {navbar: usernavbar});
+    }
+    else {
+        res.render(__dirname + "/public/pages/survey.ejs", {navbar: guestnavbar});
+    }
+});
+
+
+app.get('/resources', (req, res) => {
+    if (req.session.user === 'admin') {
+        res.render(__dirname + "/public/pages/resources.ejs", {navbar: adminnavbar});
+    }
+    else if (req.session.user === 'employee') {
+        res.render(__dirname + "/public/pages/resources.ejs", {navbar: employeenavbar});
+    }
+    else if (req.session.user === 'user') {
+        res.render(__dirname + "/public/pages/resources.ejs", {navbar: usernavbar});
+    }
+    else {
+        res.render(__dirname + "/public/pages/resources.ejs", {navbar: guestnavbar});
     }
 });
 
