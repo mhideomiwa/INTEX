@@ -81,7 +81,15 @@ app.post("/login", (req, res) => {
                     username: username,
                     role: user[0].role
                 }
-                res.sendFile(__dirname + "/public/pages/home.html");
+                if (user[0].role === "admin") {
+                    res.render(__dirname + "/public/pages/adminhome.ejs");
+                }
+                else if (user[0].role === "employee") {
+                    res.render(__dirname + "/public/pages/employeehome.ejs");
+                }
+                else {
+                    res.render(__dirname + "/public/pages/userhome.ejs");
+                }
             } else {
                 // If password is incorrect, display error message in login.ejs
                 res.render(__dirname + "/public/pages/login", { message: 'Incorrect username or password.' });
@@ -93,11 +101,59 @@ app.post("/login", (req, res) => {
     });
 });
 
+app.get("/adminhome", (req, res) => {
+    if (req.session.user) {
+        if (req.session.user.role === "admin") {
+            res.render(__dirname + "/public/pages/adminhome.ejs");
+        } else {
+            res.sendFile(__dirname + "/public/pages/notAuthorized.html");
+        }
+    } else {
+        res.render(__dirname + "/public/pages/login", {message: "Please login to view this page."});
+    }
+});
+
+app.get("/employeehome", (req, res) => {
+    if (req.session.user) {
+        if (req.session.user.role === "admin" || req.session.user.role === 'employee') {
+            res.sendFile(__dirname + "/public/pages/employeehome.ejs");
+        } else {
+            res.sendFile(__dirname + "/public/pages/notAuthorized.html");
+        }
+    } else {
+        res.render(__dirname + "/public/pages/login", {message: "Please login to view this page."});
+    }
+});
+
+app.get("/userhome", (req, res) => {
+    if (req.session.user) {
+        res.sendFile(__dirname + "/public/pages/userhome.ejs");
+    } else {
+        res.render(__dirname + "/public/pages/login", {message: "Please login to view this page."});
+    }
+});
+
 app.get("/logout", (req, res) => {
     req.session.destroy();
     res.sendFile(__dirname + "/public/index.html");
 });
 
+
+app.get("/home", (req, res) => {
+    if (req.session.user) {
+        if (req.session.user.role === "admin") {
+            res.render(__dirname + "/public/pages/adminhome.ejs");
+        }
+        else if (req.session.user.role === "employee") {
+            res.render(__dirname + "/public/pages/employeehome.ejs");
+        }
+        else {
+            res.render(__dirname + "/public/pages/userhome.ejs");
+        }
+    } else {
+        res.sendFile(__dirname + "/public/index.html");
+    }
+})
 
 //Signup post
 app.post("/signup", (req, res) => {
@@ -129,7 +185,7 @@ app.post("/signup", (req, res) => {
                 email: email,
                 role: "user"
             }).then(user => {
-                res.sendFile(__dirname + "/public/pages/home.html");
+                res.render(__dirname + "/public/pages/login", {message: "Account created successfully. Please login."});
             });
         }
     });

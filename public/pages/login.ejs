@@ -17,20 +17,26 @@
     <!-- Core theme CSS (includes Bootstrap)-->
     <link rel="stylesheet" href="/css/index.css">
     <link href="../css/login.css" rel="stylesheet" />
+    <link href="../css/navbar.css" rel="stylesheet" />
     <script src="login.js"></script>
 </head>
 <body>
     <header>
         <div>
-            <a href="../index.html"><h1>Provo SMU MH</h1></a>
+            <a href="/home"><h1>Provo SMU MH</h1></a>
         </div>
         <nav>
-            <a href="../index.html">Home</a>
+            <a href="/home">Home</a>
             <a href="pages/dashboard.html">Dashboard</a>
             <a href="pages/survey.html">Survey</a>
             <a href="pages/resources.html">Resources</a> <!-- Updated link to point to the resources.html file -->
-            <div class="login">
-                <a class="login-button" href="login">Login</a>
+            <!--            dropdown that -->
+            <div class="dropdown">
+                <a href="#" class="login-button">My Profile</a>
+                <div class="dropdown-content">
+                    <a href="/logout">Logout</a>
+                    <a href="/viewProfile">View Profile</a>
+                </div>
             </div>
         </nav>
     </header>
