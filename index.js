@@ -19,6 +19,8 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
 }))
+
+
 app.set("views", path.join(__dirname, "public/pages"));
 
 app.use(express.urlencoded({extended : true}));
@@ -96,6 +98,8 @@ app.get("/logout", (req, res) => {
     res.sendFile(__dirname + "/public/index.html");
 });
 
+
+//Signup post
 app.post("/signup", (req, res) => {
     let firstname = req.body.user_first_name;
     let lastname = req.body.user_last_name;
@@ -132,6 +136,8 @@ app.post("/signup", (req, res) => {
 
 })
 
+
+//Submit Survey post
 app.post('/submitSurvey', (req, res) => {
     let age = req.body.age;
     let gender = req.body.gender;
@@ -182,24 +188,47 @@ app.post('/submitSurvey', (req, res) => {
                 if (surveyData.length > 0) {
                     const surveyId = surveyData[0].survey_id;
 
-                    for (let i = 0; i < socialMediaPlatforms.length; i++) {
+                    if(socialMediaPlatforms[0] === '10') {
                         knex("individual_platforms").insert({
                             survey_id: surveyId,
-                            platform_id: socialMediaPlatforms[i],
-                            platform_number: i+1
+                            platform_id: socialMediaPlatforms[0],
+                            platform_number: 0
 
                         }).then(surveySocialMedia => {
                             console.log("Survey Social Media Inserted");
                         });
+                    } else {
+                        for (let i = 0; i < socialMediaPlatforms.length; i++) {
+                            knex("individual_platforms").insert({
+                                survey_id: surveyId,
+                                platform_id: socialMediaPlatforms[i],
+                                platform_number: i+1
+
+                            }).then(surveySocialMedia => {
+                                console.log("Survey Social Media Inserted");
+                            });
+                        }
                     }
-                    for (let i = 0; i < affiliatedOrganizations.length; i++) {
+
+
+                    if(affiliatedOrganizations[0] === '6') {
                         knex("individual_organizations").insert({
                             survey_id: surveyId,
-                            organization_id: affiliatedOrganizations[i],
-                            organization_number: i+1
+                            organization_id: affiliatedOrganizations[0],
+                            organization_number: 0
                         }).then(surveyOrganizations => {
                             console.log("Survey Organizations Inserted");
                         });
+                    } else {
+                        for (let i = 0; i < affiliatedOrganizations.length; i++) {
+                            knex("individual_organizations").insert({
+                                survey_id: surveyId,
+                                organization_id: affiliatedOrganizations[i],
+                                organization_number: i+1
+                            }).then(surveyOrganizations => {
+                                console.log("Survey Organizations Inserted");
+                            });
+                        }
                     }
 
                     res.redirect("/pages/thankYou.html");
@@ -207,6 +236,8 @@ app.post('/submitSurvey', (req, res) => {
         })
     });
 });
+
+
 
 
 app.listen(port, () => console.log("Listening on port: " + port + "."));
