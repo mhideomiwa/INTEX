@@ -691,6 +691,57 @@ app.post('/change-password', (req, res) => {
 });
 
 
+//Users Page Routes
+app.get('/users', (req, res) => {
+    if (req.session.user) {
+        if (req.session.user.role === "admin") {
+            knex("users").select().then(users => {
+                res.render(__dirname + "/public/pages/users.ejs", {navbar: adminnavbar, users: users});
+            });
+        }
+        else {
+            res.sendFile(__dirname + '/public/pages/notAuthorized.html');
+        }
+    } else {
+        res.sendFile(__dirname + '/public/pages/notAuthorized.html');
+    }
+});
+
+app.post('/updateUsers', async (req, res) => {
+    try {
+        const username = req.body.username; // Fetch the user's unique identifier from the form
+        const newRole = req.body.newUserRole; // Fetch the updated role from the form
+        // console.log('username:', username, 'newRole:', newRole); //This was for testing purposes
+
+        // Update the user's role in the database using the userId
+        // You should use the appropriate function to update the database based on your schema
+        for (let i = 0; i < username.length; i++) {
+            await knex('users')
+                .where({ username: username[i] })
+                .update({ role: newRole[i] });
+        }
+
+        res.redirect('/users'); // Redirect back to the users page after the update
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('An error occurred');
+    }
+});
+
+app.delete('/deleteUser/:username', async (req, res) => {
+    try {
+        const { username } = req.params;
+
+        // Delete the user from the 'users' table where the username matches
+        await knex('users').where({ username: username }).del();
+
+        res.sendStatus(200); // Send a success status upon successful deletion
+    } catch (error) {
+        console.error('Error deleting user:', error);
+        res.sendStatus(500); // Send a server error status on failure
+    }
+});
+
 
 //TODO: For testing purposes.  Delete me!
 app.get('/test', (req, res) => {

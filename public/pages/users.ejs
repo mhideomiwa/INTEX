@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/navbar.css">
+    <script src="/pages/users.js"></script>
+</head>
+<body>
+<%- navbar %>
+
+<h1>Users</h1>
+<form action="/updateUsers" method="post">
+    <table id="usersTable">
+        <thead>
+        <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Role</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody id="usersTableBody">
+        <% for (let iCount = 0; iCount < users.length; iCount++) { %>
+            <tr>
+                <td><%= users[iCount].username %></td>
+                <td><%= users[iCount].email %></td>
+                <td><%= users[iCount].first_name %></td>
+                <td><%= users[iCount].last_name %></td>
+                <td>
+                    <!-- Use a separate dropdown for each user -->
+                    <input type="hidden" name="username[<%= iCount %>]" value="<%= users[iCount].username %>">
+                    <select name="newUserRole[<%= iCount %>]">
+                        <% const userRole = users[iCount].role; %>
+                        <option value="<%= userRole %>"><%= userRole %></option>
+                        <% if (userRole !== 'admin') { %>
+                            <option value="admin">admin</option>
+                        <% } %>
+                        <% if (userRole !== 'employee') { %>
+                            <option value="employee">employee</option>
+                        <% } %>
+                        <% if (userRole !== 'user') { %>
+                            <option value="user">user</option>
+                        <% } %>
+                    </select>
+                </td>
+                <td>
+                    <button onclick="deleteUser('<%= users[iCount].username %>')">Delete</button>
+                </td>
+            </tr>
+        <% } %>
+        </tbody>
+    </table>
+    <input type="submit" value="Update Roles">
+</form>
+</body>
+</html>
