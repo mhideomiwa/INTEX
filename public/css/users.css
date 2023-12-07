@@ -1,0 +1,92 @@
+/* roles.css */
+
+/* Basic styling for the page */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+/* Styling for the users' table */
+#usersTable {
+    width: 60%;
+    border-collapse: collapse;
+    margin: 20px auto; /* Center the table horizontally */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#usersTable th, #usersTable td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+#usersTable th {
+    background-color: #4d7ddc;
+    color: white;
+}
+
+#usersTableBody {
+    background-color: #e6f7ff; /* Light blue background color */
+}
+
+/* Styling for the role dropdowns */
+select {
+    padding: 5px;
+}
+
+/* Styling for the delete button */
+button {
+    background-color: #ff4d4d;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+}
+
+form {
+    text-align: center;
+    margin: 20px auto;
+}
+
+input[type="submit"] {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4CAF50; /* Green background color for the button */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.confirmation-modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background-color: white;
+    z-index: 1000;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Style for the "Yes, delete" button */
+.confirmation-modal button.yes-button {
+    background-color: #ff4d4d; /* Red background color for the button */
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Additional styling as needed */
