@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Document</title>
+</head>
+<body>
+   <form action="/addCountry" method="POST">
+     <fieldset style="width: 0px;">
+       <legend>Add a Response:</legend>
+       <label for="country_name">Enter Country Name:</label>
+       <input type="text" id="country_name" name="country_name">
+       <br><br>
+       <label for="popular_site">Enter Popular Site:</label>
+       <input type="text" id="popular_site" name="popular_site">
+       <br><br>
+       <label for="capital">Enter Capital:</label>
+       <input type="text" id="capital" name="capital">
+       <br><br>
+       <label for="population">Enter Population:</label>
+       <input type="number" id="population" name="population">
+       <br><br>
+       <label for="visited">Visited (Y/N):</label>
+       <input type="checkbox" id="visited" name="visited">
+       <br><br>
+       <fieldset style="width: 100 px;">
+         <legend>Covid Level:</legend>
+         <input type="radio" id="covid_high" name="covid_level" value="H" >
+         <label for="covid_high">High</label><br>
+         <input type="radio" id="covid_medium" name="covid_level" value="M" >
+         <label for="covid_high">Medium</label><br>
+         <input type="radio" id="covid_low" name="covid_level" value="L" >
+         <label for="covid_high">Low</label><br>
+       </fieldset>
+     </fieldset>
+     <button type="submit">Save</button>
+   </form>
+</body>
+</html>
