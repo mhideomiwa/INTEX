@@ -13,78 +13,88 @@
 <body>
 
 <%- navbar %>
-<div class="container">
-    <div class="row">
-        <div class="col-12">
-            <h1>Survey Results</h1>
+<div class="content-container">
+    <div class="page-title">
+        <h1>Survey Results</h1>
+    </div>
+    <br><br>
+    <div class="page-description">
+        <p>Below are the results of the survey. You can filter the results by filling out the form below and clicking the
+            "Apply Filters" button. You can also click on the column headers to sort the table by that column.</p>
+    </div>
+    <div class="formContainer">
+        <div class="filters">
+            <form id="filterForm" enctype="multipart/form-data">
+                <div class="filter1">
+                    <label for="surveyIdSearch">Survey ID:</label>
+                    <input type="text" id="SurveyIdSearch" name="SurveyIdSearch" placeholder="Survey Id">
+                    <br><br>
+                </div>
+                <div class="filter2">
+                    Location:
+                    <input type="checkbox" id="LocationSearch1" name="LocationSearch1" value="Provo">
+                    <label for="LocationSearch1">Provo</label>
+                    <input type="checkbox" id="LocationSearch2" name="LocationSearch2" value="Plainsville">
+                    <label for="LocationSearch2">Plainsville</label>
+                </div>
+                <div class="filter3">
+                    Time Spent:
+                    <input type="checkbox" id="TimeSpentSearch1" name="TimeSpentSearch1" value="1">
+                    <label for="TimeSpentSearch1">Less than 1 hour</label>
+                    <input type="checkbox" id="TimeSpentSearch2" name="TimeSpentSearch2" value="2">
+                    <label for="TimeSpentSearch2">Between 1 and 2 Hours</label>
+                    <input type="checkbox" id="TimeSpentSearch3" name="TimeSpentSearch3" value="3">
+                    <label for="TimeSpentSearch3">Between 2 and 3 Hours</label>
+                    <input type="checkbox" id="TimeSpentSearch4" name="TimeSpentSearch4" value="4">
+                    <label for="TimeSpentSearch4">Between 3 and 4 Hours</label>
+                    <input type="checkbox" id="TimeSpentSearch5" name="TimeSpentSearch5" value="5">
+                    <label for="TimeSpentSearch5">Between 4 and 5 Hours</label>
+                    <input type="checkbox" id="TimeSpentSearch6" name="TimeSpentSearch6" value="6">
+                    <label for="TimeSpentSearch6">More than 5 hours</label>
+                </div>
+
+                <input type="submit" value="Apply Filters">
+            </form>
         </div>
     </div>
+
+
+    <div class="tableContainer">
+        <table id="surveyTable" class="resultsTable">
+            <thead>
+            <tr class="resultsHead">
+                <th class="resultsHeaders">Survey Id</th>
+                <th class="resultsHeaders">Timestamp</th>
+                <th class="resultsHeaders">Age</th>
+                <th class="resultsHeaders">Gender</th>
+                <th class="resultsHeaders">Relationship</th>
+                <th class="resultsHeaders">Occupation</th>
+                <th class="resultsHeaders">Associated Organizations</th>
+                <th class="resultsHeaders">Use Social Media</th>
+                <th class="resultsHeaders">Platforms Used</th>
+                <th class="resultsHeaders">Time Spent</th>
+                <th class="resultsHeaders">No Specific Purpose</th>
+                <th class="resultsHeaders">Distracted By Social Media</th>
+                <th class="resultsHeaders">Restless Without Social Media</th>
+                <th class="resultsHeaders">Easily Distracted</th>
+                <th class="resultsHeaders">Bothered by Worries</th>
+                <th class="resultsHeaders">Difficulty Concentrating</th>
+                <th class="resultsHeaders">Compare with Successful People</th>
+                <th class="resultsHeaders">Feelings about Comparisons</th>
+                <th class="resultsHeaders">Validation from Social Media</th>
+                <th class="resultsHeaders">Feeling Depressed or Down</th>
+                <th class="resultsHeaders">Fluctuation in Interests</th>
+                <th class="resultsHeaders">Sleep Issues</th>
+                <th class="resultsHeaders">Origin</th>
+            </tr>
+            </thead>
+            <tbody id="surveyTableBody" class="resultsContent">
+            <% include('../modules/tableRows.ejs') %>
+            </tbody>
+        </table>
+    </div>
+
 </div>
-<br><br>
-
-<form id="filterForm" enctype="multipart/form-data">
-    <label for="surveyIdSearch">Survey ID:</label>
-    <input type="text" id="SurveyIdSearch" name="SurveyIdSearch" placeholder="Survey Id">
-    <br><br>
-    Location:
-    <input type="checkbox" id="LocationSearch1" name="LocationSearch1" value="Provo">
-    <label for="LocationSearch1">Provo</label>
-    <input type="checkbox" id="LocationSearch2" name="LocationSearch2" value="Plainsville">
-    <label for="LocationSearch2">Plainsville</label>
-    <br><br>
-    Time Spent:
-    <input type="checkbox" id="TimeSpentSearch1" name="TimeSpentSearch1" value="1">
-    <label for="TimeSpentSearch1">Less than 1 hour</label>
-    <input type="checkbox" id="TimeSpentSearch2" name="TimeSpentSearch2" value="2">
-    <label for="TimeSpentSearch2">Between 1 and 2 Hours</label>
-    <input type="checkbox" id="TimeSpentSearch3" name="TimeSpentSearch3" value="3">
-    <label for="TimeSpentSearch3">Between 2 and 3 Hours</label>
-    <input type="checkbox" id="TimeSpentSearch4" name="TimeSpentSearch4" value="4">
-    <label for="TimeSpentSearch4">Between 3 and 4 Hours</label>
-    <input type="checkbox" id="TimeSpentSearch5" name="TimeSpentSearch5" value="5">
-    <label for="TimeSpentSearch5">Between 4 and 5 Hours</label>
-    <input type="checkbox" id="TimeSpentSearch6" name="TimeSpentSearch6" value="6">
-    <label for="TimeSpentSearch6">More than 5 hours</label>
-
-    <br><br>
-
-    <input type="submit" value="Apply Filters">
-</form>
-
-
-<table id="surveyTable" style="width: 100%; background-color: antiquewhite; border: 1px solid black;">
-    <thead style="background-color: cornflowerblue; color: white;">
-    <tr>
-        <th style="text-align: left;">Survey Id</th>
-        <th style="text-align: left;">Timestamp</th>
-        <th style="text-align: left;">Age</th>
-        <th style="text-align: left;">Gender</th>
-        <th style="text-align: left;">Relationship</th>
-        <th style="text-align: left;">Occupation</th>
-        <th style="text-align: left;">Associated Organizations</th>
-        <th style="text-align: left;">Use Social Media</th>
-        <th style="text-align: left;">Platforms Used</th>
-        <th style="text-align: left;">Time Spent</th>
-        <th style="text-align: left;">No Specific Purpose</th>
-        <th style="text-align: left;">Distracted By Social Media</th>
-        <th style="text-align: left;">Restless Without Social Media</th>
-        <th style="text-align: left;">Easily Distracted</th>
-        <th style="text-align: left;">Bothered by Worries</th>
-        <th style="text-align: left;">Difficulty Concentrating</th>
-        <th style="text-align: left;">Compare with Successful People</th>
-        <th style="text-align: left;">Feelings about Comparisons</th>
-        <th style="text-align: left;">Validation from Social Media</th>
-        <th style="text-align: left;">Feeling Depressed or Down</th>
-        <th style="text-align: left;">Fluctuation in Interests</th>
-        <th style="text-align: left;">Sleep Issues</th>
-        <th style="text-align: left;">Origin</th>
-    </tr>
-    </thead>
-    <tbody id="surveyTableBody" style="font-family: Arial; font-size: 9pt;">
-    <% include('../modules/tableRows.ejs') %>
-    </tbody>
-</table>
-<br><br>
 
 </body>
 </html>
