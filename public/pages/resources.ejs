@@ -1,4 +1,3 @@
-<!-- File: resources.ejs -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,26 +15,42 @@
     <h1 class="socialMedia">Social Media and Mental Health Resources</h1>
 
     <h2>Improvement Tips:</h2>
-    
+
     <div class="container">
         <div class="category" id="category1">
             <i class="icon" data-feather="heart"></i>
             <div class="title">Intention</div>
-            <div class="dropdown-content" id="dropdown1">
+        </div>
+    
+        <div class="category" id="category2">
+            <i class="icon" data-feather="smartphone"></i>
+            <div class="title">Phone</div>
+        </div>
+
+        <div class="category" id="category3">
+            <i class="icon" data-feather="smile"></i>
+            <div class="title">Health</div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <br>
+
+    <div class="container2">
+        <div class="accordion" onclick="toggleAccordion(this)">
+            <div class="accordion-header">Intention<span class="dropdown-arrow"></span></div>
+            <div class="accordion-content">
                 <p>Establish a daily phone usage curfew</p>
                 <p>Have a purpose when getting on social media</p>
                 <p>Leave your phone in another room</p>
                 <p>Evaluate if you are a passive or active user</p>
                 <p>Prioritize interacting with people face-to-face</p>
                 <p>Look to more news sources to stay informed </p>
-                <!-- Add more tips as needed -->
             </div>
         </div>
-    
-        <div class="category" id="category2">
-            <i class="icon" data-feather="smartphone"></i>
-            <div class="title">Phone</div>
-            <div class="dropdown-content" id="dropdown2">
+        <div class="accordion" onclick="toggleAccordion(this)">
+            <div class="accordion-header">Phone<span class="dropdown-arrow"></span></div>
+            <div class="accordion-content">
                 <p>Set your phone to grayscale</p>
                 <p>Use time limits</p>
                 <p>Track the time you spend and set goals</p>
@@ -45,32 +60,21 @@
                 <p>Change the location of the apps on your phone</p>
             </div>
         </div>
-
-        <div class="category" id="category3">
-            <i class="icon" data-feather="smile"></i>
-            <div class="title">Health</div>
-            <div class="dropdown-content" id="dropdown3">
+        <div class="accordion" onclick="toggleAccordion(this)">
+            <div class="accordion-header">Health<span class="dropdown-arrow"></span></div>
+            <div class="accordion-content">
                 <p>Join a club</p>
                 <p>Interact with strangers</p>
                 <p>Express gratitude</p>
                 <p>Practice mindfulness</p>
                 <p>Participate in volunteer work</p>
                 <p>Get outside</p>
-                <!-- Add more tips as needed -->
             </div>
         </div>
     </div>
     <br>
     <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    
+
     <!-- List container outside the .container div -->
     <div class="listContainer">
         <h2>For more information see these articles:</h2>
@@ -80,51 +84,35 @@
                     - 10 Ways to Spend Less Time on Social Media to Reduce Addictive Side Effects on Teens
                 </a>
             </li>
-
-                <li>
-                    <a href="https://jedfoundation.org/resource/understanding-social-media-use-and-balance/?gad_source=1&gclid=Cj0KCQiAsburBhCIARIsAExmsu4GRyI0v5KSycoShcpiqsX3WkSLxUvAn-SU9cSoFMoR_tABZgpLAqoaAoDhEALw_wcB" target="_blank">
-                        - Understanding Social Media Use and Balance
-                    </a>
-                </li>
-
-                <li>
-                    <a href="https://www.helpguide.org/articles/mental-health/social-media-and-mental-health.htm" target="_blank">
-                        - Social Media and Mental Health
-                    </a>
-                </li>
-                <!-- Add more list items as needed 
-                
-                <br>
-                <br>
-                <br>
-                <br>
-                <li>
-                    <a href="https://paintedbrain.org/editorial/7-ways-social-media-can-benefit-mental-health-2?gclid=Cj0KCQiAsburBhCIARIsAExmsu7o2iDnKZ_eQ5R-MwrKQhRDpjUQgj3hl3MImW7LVj8QD7P4m2iiCBgaAh07EALw_wcB" target="_blank">
-                        7 Ways Social Media Can Benefit Mental Health
-                    </a>
-                </li>
-
-                -->
+            <li>
+                <a href="https://jedfoundation.org/resource/understanding-social-media-use-and-balance/?gad_source=1&gclid=Cj0KCQiAsburBhCIARIsAExmsu4GRyI0v5KSycoShcpiqsX3WkSLxUvAn-SU9cSoFMoR_tABZgpLAqoaAoDhEALw_wcB" target="_blank">
+                    - Understanding Social Media Use and Balance
+                </a>
+            </li>
+            <li>
+                <a href="https://www.helpguide.org/articles/mental-health/social-media-and-mental-health.htm" target="_blank">
+                    - Social Media and Mental Health
+                </a>
+            </li>
         </ul>
     </div>
 
     <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
     <script>
+        function toggleAccordion(accordion) {
+            accordion.classList.toggle('active');
+            const content = accordion.querySelector('.accordion-content');
+            
+            // Toggle the max-height property
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+            } else {
+                content.style.maxHeight = content.scrollHeight + 'px';
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
             feather.replace();
-        });
-
-        document.addEventListener('DOMContentLoaded', function () {
-            const categories = document.querySelectorAll('.category');
-
-            categories.forEach(category => {
-                const dropdown = category.querySelector('.dropdown-content');
-
-                category.addEventListener('click', function () {
-                    // Toggle the visibility of the dropdown content
-                    dropdown.style.display = (dropdown.style.display === 'block') ? 'none' : 'block';
-                });
-            });
         });
     </script>
 
