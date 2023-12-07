@@ -7,7 +7,7 @@ body {
 }
 
 .content-container {
-    max-width: 1200px;
+    max-width: 70%;
     margin: 20px auto;
     padding: 0 15px;
     box-sizing: border-box;
@@ -42,15 +42,43 @@ body {
 .tableContainer {
     overflow-x: auto;
     width: 100%;
-    height: 500px;
     margin: 0 auto;
-    border: 1px solid #2b2823;
+    position: relative; /* Add position relative */
 }
 
-.resultsTable {
-    width: 100%;
-    border-collapse: collapse;
+
+/* Add styles for the table header */
+/* Add styles for the table header */
+.resultsTable thead {
+    display: block;
+    position: sticky;
+    top: 0;
+    background-color: cornflowerblue; /* Apply background color to header */
+    color: white; /* Set text color */
+    z-index: 1; /* Ensure the header is on top of the content */
 }
+
+/* Display the table rows as block elements */
+.resultsTable tbody {
+    display: block;
+    overflow-y: scroll;
+    max-height: 400px; /* Adjust the max height as needed */
+}
+
+/* Set specific width for each cell in the table */
+.resultsTable tbody td {
+    width: 150px; /* Adjust the width as needed */
+    text-align: left;
+}
+
+/* Display the table headers as flex */
+.resultsTable tbody tr:first-child th {
+    position: sticky;
+    top: 0;
+    background-color: cornflowerblue; /* Background color for sticky header */
+    color: white; /* Text color for sticky header */
+}
+
 
 .resultsHead {
     background-color: cornflowerblue;
@@ -79,4 +107,24 @@ body {
 .resultsContent td {
     padding: 10px;
     border-bottom: 1px solid #ddd;
+}
+
+.applyFiltersButton {
+    width: 15%;
+    margin-top: 20px;
+    background-color: #c44601;
+    border-radius: 7px;
+    border: none;
+    padding: 7px;
+    color: #fff;
+    text-decoration: none;
+    transition: background-color 0.5s;
+    font-family: 'Avenir', sans-serif;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.applyFiltersButton:hover {
+    background-color: #8babf1; /* Darker blue on hover */
+    color: black;
 }
