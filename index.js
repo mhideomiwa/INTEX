@@ -348,9 +348,8 @@ app.get("/surveyResults", async (req, res) => {
 });
 
 //Filter Survey Results
-app.post("/filterSurveyResults", async(req, res) => {
+app.post("/filterSurveyResults", async (req, res) => {
     try {
-        // console.log('Body: ', req.body); //This was for testing purposes
         let surveyId = req.body.SurveyIdSearch;
         let location1 = req.body.LocationSearch1;
         let location2 = req.body.LocationSearch2;
@@ -361,12 +360,9 @@ app.post("/filterSurveyResults", async(req, res) => {
             req.body.TimeSpentSearch4,
             req.body.TimeSpentSearch5,
             req.body.TimeSpentSearch6
-        ].filter(Boolean); // Remove undefined values
+        ].filter(Boolean);
 
-
-        // console.log('surveyId:', surveyId, 'location1:', location1, 'location2:', location2, 'timeSpent:', timeSpent); //This was for testing purposes
-
-        let query = knex("survey")
+        let query = knex("survey as s")
             .select(
                 's.survey_id',
                 's.survey_time',
@@ -374,9 +370,9 @@ app.post("/filterSurveyResults", async(req, res) => {
                 'g.gender_description',
                 'r.relationship_description',
                 'o.occupation_description',
-                knex.raw('CASE WHEN COUNT(DISTINCT org.organization_type) = 1 THEN MAX(org.organization_type) ELSE STRING_AGG(org.organization_type, \', \') END AS organization_type'),
+                'ot.organization_types',
                 's.use_social_media',
-                knex.raw('CASE WHEN COUNT(DISTINCT p.platform_name) = 1 THEN MAX(p.platform_name) ELSE STRING_AGG(p.platform_name, \', \') END AS platform_name'),
+                'pt.platform_names',
                 't.time_description',
                 's.no_specific_purpose',
                 's.distracted_by_social_media',
@@ -392,41 +388,23 @@ app.post("/filterSurveyResults", async(req, res) => {
                 's.sleep_issues',
                 's.origin'
             )
-            .from('survey as s')
             .join('gender as g', 's.gender_id', 'g.gender_id')
             .join('relationship_status as r', 's.relationship_id', 'r.relationship_id')
             .join('occupation_status as o', 's.occupation_id', 'o.occupation_id')
-            .leftJoin('individual_organizations as io', 's.survey_id', 'io.survey_id')
-            .join('organization as org', 'io.organization_id', 'org.organization_id')
-            .join('time_spent as t', 's.time_id', 't.time_id')
-            .leftJoin('individual_platforms as ip', 's.survey_id', 'ip.survey_id')
-            .join('platform as p', 'ip.platform_id', 'p.platform_id')
-            .groupBy(
-                's.survey_id',
-                's.survey_time',
-                's.age',
-                'g.gender_description',
-                'r.relationship_description',
-                'o.occupation_description',
-                's.use_social_media',
-                't.time_description',
-                's.no_specific_purpose',
-                's.distracted_by_social_media',
-                's.restless_without_social_media',
-                's.easily_distracted',
-                's.bothered_by_worries',
-                's.concentration_difficulty',
-                's.compare_with_successful_people',
-                's.feel_about_comparisons',
-                's.validation_from_social_media',
-                's.depressed_or_down',
-                's.interest_fluctuation',
-                's.sleep_issues',
-                's.origin'
-            );
+            .leftJoin(knex.raw(`
+                (SELECT io.survey_id, STRING_AGG(org.organization_type, ', ') AS organization_types
+                FROM individual_organizations io
+                JOIN organization org ON io.organization_id = org.organization_id
+                GROUP BY io.survey_id) AS ot
+            `), 's.survey_id', 'ot.survey_id')
+            .leftJoin(knex.raw(`
+                (SELECT ip.survey_id, STRING_AGG(p.platform_name, ', ') AS platform_names
+                FROM individual_platforms ip
+                JOIN platform p ON ip.platform_id = p.platform_id
+                GROUP BY ip.survey_id) AS pt
+            `), 's.survey_id', 'pt.survey_id')
+            .join('time_spent as t', 's.time_id', 't.time_id');
 
-
-        // Apply filters if they are provided
         if (surveyId && surveyId.trim() !== '') {
             query = query.where("s.survey_id", surveyId);
         }
@@ -444,12 +422,10 @@ app.post("/filterSurveyResults", async(req, res) => {
             });
         }
 
-        // Execute the query
         const surveyData = await query;
 
-        // Render the table rows HTML using EJS
         const tableRowsHTML = await ejs.renderFile(__dirname + '/public/modules/tableRows.ejs', { surveyData });
-        res.send(tableRowsHTML); // Send only the updated table rows HTML back to the client
+        res.send(tableRowsHTML);
     } catch (error) {
         console.error('Error:', error);
         res.status(500).send('An error occurred');
