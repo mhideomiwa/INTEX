@@ -233,7 +233,7 @@ app.post('/submitSurvey', (req, res) => {
                             platform_number: 0
 
                         }).then(surveySocialMedia => {
-                            console.log("Survey Social Media Inserted");
+                            // console.log("Survey Social Media Inserted"); //This was for testing purposes
                         });
                     } else {
                         for (let i = 0; i < socialMediaPlatforms.length; i++) {
@@ -243,7 +243,7 @@ app.post('/submitSurvey', (req, res) => {
                                 platform_number: i+1
 
                             }).then(surveySocialMedia => {
-                                console.log("Survey Social Media Inserted");
+                                // console.log("Survey Social Media Inserted"); //This was for testing purposes
                             });
                         }
                     }
@@ -255,7 +255,7 @@ app.post('/submitSurvey', (req, res) => {
                             organization_id: affiliatedOrganizations[0],
                             organization_number: 0
                         }).then(surveyOrganizations => {
-                            console.log("Survey Organizations Inserted");
+                            // console.log("Survey Organizations Inserted"); //This was for testing purposes
                         });
                     } else {
                         for (let i = 0; i < affiliatedOrganizations.length; i++) {
@@ -264,7 +264,7 @@ app.post('/submitSurvey', (req, res) => {
                                 organization_id: affiliatedOrganizations[i],
                                 organization_number: i+1
                             }).then(surveyOrganizations => {
-                                console.log("Survey Organizations Inserted");
+                                // console.log("Survey Organizations Inserted"); //This was for testing purposes
                             });
                         }
                     }
@@ -283,31 +283,37 @@ app.get("/surveyResults", async (req, res) => {
             if (req.session.user.role === "admin" || req.session.user.role === 'employee') {
                 const surveyData = await knex.raw(`
                     SELECT
-                    s.survey_id,
-                    s.survey_time,
-                    s.age,
-                    g.gender_description,
-                    r.relationship_description,
-                    o.occupation_description,
-                    string_agg(org.organization_type, ', ') AS organization_type,
-                    s.use_social_media,
-                    string_agg(p.platform_name, ', ') AS platform_name,
-                    t.time_description,
-                    s.no_specific_purpose,
-                    s.distracted_by_social_media,
-                    s.restless_without_social_media,
-                    s.easily_distracted,
-                    s.bothered_by_worries,
-                    s.concentration_difficulty,
-                    s.compare_with_successful_people,
-                    s.feel_about_comparisons,
-                    s.validation_from_social_media,
-                    s.depressed_or_down,
-                    s.interest_fluctuation,
-                    s.sleep_issues,
-                    s.origin
+                        s.survey_id,
+                        s.survey_time,
+                        s.age,
+                        g.gender_description,
+                        r.relationship_description,
+                        o.occupation_description,
+                        CASE
+                            WHEN COUNT(DISTINCT org.organization_type) = 1 THEN MAX(org.organization_type)
+                            ELSE string_agg(org.organization_type, ', ')
+                        END AS organization_type,
+                        s.use_social_media,
+                        CASE
+                            WHEN COUNT(DISTINCT p.platform_name) = 1 THEN MAX(p.platform_name)
+                            ELSE string_agg(p.platform_name, ', ')
+                        END AS platform_name,
+                        t.time_description,
+                        s.no_specific_purpose,
+                        s.distracted_by_social_media,
+                        s.restless_without_social_media,
+                        s.easily_distracted,
+                        s.bothered_by_worries,
+                        s.concentration_difficulty,
+                        s.compare_with_successful_people,
+                        s.feel_about_comparisons,
+                        s.validation_from_social_media,
+                        s.depressed_or_down,
+                        s.interest_fluctuation,
+                        s.sleep_issues,
+                        s.origin
                     FROM
-                    survey s
+                        survey s
                     JOIN gender g ON s.gender_id = g.gender_id
                     JOIN relationship_status r ON s.relationship_id = r.relationship_id
                     JOIN occupation_status o ON s.occupation_id = o.occupation_id
@@ -317,11 +323,11 @@ app.get("/surveyResults", async (req, res) => {
                     LEFT JOIN individual_platforms ip ON s.survey_id = ip.survey_id
                     JOIN platform p ON ip.platform_id = p.platform_id
                     GROUP BY s.survey_id, s.survey_time, s.age, g.gender_description,
-                    r.relationship_description, o.occupation_description, s.use_social_media,
-                    t.time_description, s.no_specific_purpose, s.distracted_by_social_media,
-                    s.restless_without_social_media, s.easily_distracted, s.bothered_by_worries,
-                    s.concentration_difficulty, s.compare_with_successful_people, s.feel_about_comparisons,
-                    s.validation_from_social_media, s.depressed_or_down, s.interest_fluctuation, s.sleep_issues, s.origin;
+                        r.relationship_description, o.occupation_description, s.use_social_media,
+                        t.time_description, s.no_specific_purpose, s.distracted_by_social_media,
+                        s.restless_without_social_media, s.easily_distracted, s.bothered_by_worries,
+                        s.concentration_difficulty, s.compare_with_successful_people, s.feel_about_comparisons,
+                        s.validation_from_social_media, s.depressed_or_down, s.interest_fluctuation, s.sleep_issues, s.origin;
                     `); // Fetch complete survey data
 
                 if (req.session.user.role === 'admin') {
@@ -344,7 +350,7 @@ app.get("/surveyResults", async (req, res) => {
 //Filter Survey Results
 app.post("/filterSurveyResults", async(req, res) => {
     try {
-        console.log('Body: ', req.body);
+        // console.log('Body: ', req.body); //This was for testing purposes
         let surveyId = req.body.SurveyIdSearch;
         let location1 = req.body.LocationSearch1;
         let location2 = req.body.LocationSearch2;
@@ -358,65 +364,65 @@ app.post("/filterSurveyResults", async(req, res) => {
         ].filter(Boolean); // Remove undefined values
 
 
-        // console.log('surveyId:', surveyId, 'location1:', location1, 'location2:', location2, 'timeSpent:', timeSpent);
+        // console.log('surveyId:', surveyId, 'location1:', location1, 'location2:', location2, 'timeSpent:', timeSpent); //This was for testing purposes
 
         let query = knex("survey")
             .select(
-                "s.survey_id",
-                "s.survey_time",
-                "s.age",
-                "g.gender_description",
-                "r.relationship_description",
-                "o.occupation_description",
-                knex.raw("string_agg(org.organization_type, ', ') AS organization_type"),
-                "s.use_social_media",
-                knex.raw("string_agg(p.platform_name, ', ') AS platform_name"),
-                "t.time_description",
-                "s.no_specific_purpose",
-                "s.distracted_by_social_media",
-                "s.restless_without_social_media",
-                "s.easily_distracted",
-                "s.bothered_by_worries",
-                "s.concentration_difficulty",
-                "s.compare_with_successful_people",
-                "s.feel_about_comparisons",
-                "s.validation_from_social_media",
-                "s.depressed_or_down",
-                "s.interest_fluctuation",
-                "s.sleep_issues",
-                "s.origin"
+                's.survey_id',
+                's.survey_time',
+                's.age',
+                'g.gender_description',
+                'r.relationship_description',
+                'o.occupation_description',
+                knex.raw('CASE WHEN COUNT(DISTINCT org.organization_type) = 1 THEN MAX(org.organization_type) ELSE STRING_AGG(org.organization_type, \', \') END AS organization_type'),
+                's.use_social_media',
+                knex.raw('CASE WHEN COUNT(DISTINCT p.platform_name) = 1 THEN MAX(p.platform_name) ELSE STRING_AGG(p.platform_name, \', \') END AS platform_name'),
+                't.time_description',
+                's.no_specific_purpose',
+                's.distracted_by_social_media',
+                's.restless_without_social_media',
+                's.easily_distracted',
+                's.bothered_by_worries',
+                's.concentration_difficulty',
+                's.compare_with_successful_people',
+                's.feel_about_comparisons',
+                's.validation_from_social_media',
+                's.depressed_or_down',
+                's.interest_fluctuation',
+                's.sleep_issues',
+                's.origin'
             )
-            .from("survey as s")
-            .join("gender as g", "s.gender_id", "=", "g.gender_id")
-            .join("relationship_status as r", "s.relationship_id", "=", "r.relationship_id")
-            .join("occupation_status as o", "s.occupation_id", "=", "o.occupation_id")
-            .leftJoin("individual_organizations as io", "s.survey_id", "=", "io.survey_id")
-            .join("organization as org", "io.organization_id", "=", "org.organization_id")
-            .join("time_spent as t", "s.time_id", "=", "t.time_id")
-            .leftJoin("individual_platforms as ip", "s.survey_id", "=", "ip.survey_id")
-            .join("platform as p", "ip.platform_id", "=", "p.platform_id")
+            .from('survey as s')
+            .join('gender as g', 's.gender_id', 'g.gender_id')
+            .join('relationship_status as r', 's.relationship_id', 'r.relationship_id')
+            .join('occupation_status as o', 's.occupation_id', 'o.occupation_id')
+            .leftJoin('individual_organizations as io', 's.survey_id', 'io.survey_id')
+            .join('organization as org', 'io.organization_id', 'org.organization_id')
+            .join('time_spent as t', 's.time_id', 't.time_id')
+            .leftJoin('individual_platforms as ip', 's.survey_id', 'ip.survey_id')
+            .join('platform as p', 'ip.platform_id', 'p.platform_id')
             .groupBy(
-                "s.survey_id",
-                "s.survey_time",
-                "s.age",
-                "g.gender_description",
-                "r.relationship_description",
-                "o.occupation_description",
-                "s.use_social_media",
-                "t.time_description",
-                "s.no_specific_purpose",
-                "s.distracted_by_social_media",
-                "s.restless_without_social_media",
-                "s.easily_distracted",
-                "s.bothered_by_worries",
-                "s.concentration_difficulty",
-                "s.compare_with_successful_people",
-                "s.feel_about_comparisons",
-                "s.validation_from_social_media",
-                "s.depressed_or_down",
-                "s.interest_fluctuation",
-                "s.sleep_issues",
-                "s.origin"
+                's.survey_id',
+                's.survey_time',
+                's.age',
+                'g.gender_description',
+                'r.relationship_description',
+                'o.occupation_description',
+                's.use_social_media',
+                't.time_description',
+                's.no_specific_purpose',
+                's.distracted_by_social_media',
+                's.restless_without_social_media',
+                's.easily_distracted',
+                's.bothered_by_worries',
+                's.concentration_difficulty',
+                's.compare_with_successful_people',
+                's.feel_about_comparisons',
+                's.validation_from_social_media',
+                's.depressed_or_down',
+                's.interest_fluctuation',
+                's.sleep_issues',
+                's.origin'
             );
 
 
