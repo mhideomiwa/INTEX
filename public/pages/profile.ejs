@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Profile</title>
+</head>
+<body>
+
+<%- navbar %>
+
+<div>
+    <h1>My Profile</h1>
+</div>
+<div>
+    <div>
+        First Name: <%- user.first_name %>
+    </div>
+    <div>
+        Last Name: <%- user.last_name %>
+    </div>
+    <div>
+        Email: <%- user.email %>
+    </div>
+    <div>
+        Username: <%- user.username %>
+    </div>
+    <div>
+        Password: *****
+    </div>
+    <div>
+        Role: <%- user.role %>
+    </div>
+    <div>
+        <a href="/edit-profile">Edit Profile</a>
+    </div>
+</div>
+
+</body>
+</html>
