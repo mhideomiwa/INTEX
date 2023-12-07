@@ -9,7 +9,7 @@ body {
 
 h1 {
     text-align: center;
-    color: #333;
+    color: #2c2822;
 }
 
 /* Styling for the users' table */
@@ -27,12 +27,12 @@ h1 {
 }
 
 #usersTable th {
-    background-color: #4d7ddc;
+    background-color: #054fb9;
     color: white;
 }
 
 #usersTableBody {
-    background-color: #e6f7ff; /* Light blue background color */
+    background-color: #8babf1; /* Light blue background color */
 }
 
 /* Styling for the role dropdowns */
@@ -42,7 +42,7 @@ select {
 
 /* Styling for the delete button */
 button {
-    background-color: #ff4d4d;
+    background-color: #c44601;
     color: white;
     padding: 5px 10px;
     border: none;
@@ -80,7 +80,7 @@ input[type="submit"] {
 
 /* Style for the "Yes, delete" button */
 .confirmation-modal button.yes-button {
-    background-color: #ff4d4d; /* Red background color for the button */
+    background-color: #c44601; /* Red background color for the button */
     color: white;
     padding: 10px 20px;
     font-size: 16px;
