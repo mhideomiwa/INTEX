@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Profile</title>
+</head>
+<body>
+
+<div>
+    <h1>My Profile</h1>
+</div>
+<div>
+    <form name="editProfile" action="/edit-profile" method="post">
+        <%= message %><br>
+        <label for="user_first_name">First Name</label> <br>
+        <input type="text" id="user_first_name" name="user_first_name" class="required, signUpInput" maxlength="30" onkeyup="validateFirstName()" value="<%- user.first_name %>"> <br>
+        <span id="firstNameMessage"></span>
+        <label for="user_last_name">Last Name</label> <br>
+        <input type="text" id="user_last_name" name="user_last_name" class="required, signUpInput" maxlength="30" onkeyup="validateLastName()" value="<%- user.last_name %>"> <br>
+        <span id="lastNameMessage"></span>
+        <label for="user_email">Email Address</label> <br>
+        <input type="text" id="user_email" name="user_email" class="required, signUpInput" maxlength="30" onkeyup="validateEmail()" value="<%- user.email %>"> <br>
+        <span id="emailMessage"></span>
+        <label for="username">Username</label> <br>
+        <%- user.username %> <br>
+        <input type="submit" id="editProfileButton" value="Submit Changes" class="editButton">
+    </form><br>
+    <a href="/change-password">Change Password</a> <br>
+</div>
+
+</body>
+</html>

@@ -71,33 +71,41 @@ app.get("/login", (req, res) => {
     res.render(__dirname + "/public/pages/login", {message: "", navbar: guestnavbar});
 });
 
+
 app.post("/login", (req, res) => {
     let username = req.body.username;
     let password = req.body.password;
 
     knex.select().from("users").where("username", username).then(user => {
         if (user.length > 0) {
-            if (user[0].password === password) {
-                req.session.user = {
-                    username: username,
-                    role: user[0].role
+            const hashedPassword = user[0].password; // Fetch hashed password from the database
+
+            bcrypt.compare(password, hashedPassword, (err, result) => {
+                if (err) {
+                    // Handle comparison error
+                    console.error("Error comparing passwords:", err);
+                    res.status(500).send("Internal Server Error");
+                } else if (result) {
+                    // Passwords match, set session and render appropriate page
+                    req.session.user = {
+                        username: username,
+                        role: user[0].role
+                    };
+                    if (user[0].role === "admin") {
+                        res.render(__dirname + "/public/index.ejs", { navbar: adminnavbar });
+                    } else if (user[0].role === "employee") {
+                        res.render(__dirname + "/public/index.ejs", { navbar: employeenavbar });
+                    } else {
+                        res.render(__dirname + "/public/index.ejs", { navbar: usernavbar });
+                    }
+                } else {
+                    // If password is incorrect, display error message in login.ejs
+                    res.render(__dirname + "/public/pages/login", { message: 'Incorrect username or password.', navbar: guestnavbar });
                 }
-                if (user[0].role === "admin") {
-                    res.render(__dirname + "/public/index.ejs", {navbar: adminnavbar});
-                }
-                else if (user[0].role === "employee") {
-                    res.render(__dirname + "/public/index.ejs", {navbar: employeenavbar});
-                }
-                else {
-                    res.render(__dirname + "/public/index.ejs", {navbar: usernavbar});
-                }
-            } else {
-                // If password is incorrect, display error message in login.ejs
-                res.render(__dirname + "/public/pages/login", { message: 'Incorrect username or password.' });
-            }
+            });
         } else {
             // If username doesn't exist, display error message in login.ejs
-            res.render(__dirname + "/public/pages/login", { message: 'Incorrect username or password.' });
+            res.render(__dirname + "/public/pages/login", { message: 'Incorrect username or password.', navbar: guestnavbar });
         }
     });
 });
@@ -133,34 +141,43 @@ app.post("/signup", (req, res) => {
     let password = req.body.password;
     let email = req.body.user_email;
 
-    knex("users").select().where("username", username).then(user => {
-        if (user.length > 0) {
-            // If username already exists, display error message in signup.ejs
-            res.render(__dirname + "/public/pages/signup", {message: 'Username already exists.'});
-        }
-        else if(firstname === "" || lastname === "" || username === "" || password === "" || email === "") {
-            // If any field is empty, display error message in signup.ejs
-            res.render(__dirname + "/public/pages/signup", {message: 'Please fill in all fields.'});
-        }
-        else if (firstname.length > 30 || lastname.length > 30 || username.length > 30 || password.length > 30 || email.length > 30) {
-            // If any field is longer than 30 characters, display error message in signup.ejs
-            res.render(__dirname + "/public/pages/signup", {message: 'Please make sure all fields are less than 30 characters.'});
-        }
-        else {
-            knex("users").insert({
-                first_name: firstname,
-                last_name: lastname,
-                username: username,
-                password: password,
-                email: email,
-                role: "user"
-            }).then(user => {
-                res.render(__dirname + "/public/pages/login", {message: "Account created successfully. Please login."});
+    // Hash the password before storing it in the database
+    bcrypt.hash(password, 10, (err, hash) => {
+        if (err) {
+            // Handle any error that occurred during hashing
+            console.error("Error hashing password:", err);
+            res.status(500).send("Internal Server Error");
+        } else {
+            knex("users").select().where("username", username).then(user => {
+                if (user.length > 0) {
+                    // If username already exists, display error message in signup.ejs
+                    res.render(__dirname + "/public/pages/signup", { message: 'Username already exists.', navbar: guestnavbar});
+                } else if (firstname === "" || lastname === "" || username === "" || password === "" || email === "") {
+                    // If any field is empty, display error message in signup.ejs
+                    res.render(__dirname + "/public/pages/signup", { message: 'Please fill in all fields.' });
+                } else if (firstname.length > 30 || lastname.length > 30 || username.length > 30 || password.length > 30 || email.length > 30) {
+                    // If any field is longer than 30 characters, display error message in signup.ejs
+                    res.render(__dirname + "/public/pages/signup", { message: 'Please make sure all fields are less than 30 characters.', navbar: guestnavbar });
+                } else {
+                    // Insert the hashed password into the database
+                    knex("users").insert({
+                        first_name: firstname,
+                        last_name: lastname,
+                        username: username,
+                        password: hash, // Store the hashed password
+                        email: email,
+                        role: "user"
+                    }).then(user => {
+                        res.render(__dirname + "/public/pages/login", { message: "Account created successfully. Please login.", navbar: guestnavbar });
+                    }).catch(err => {
+                        console.error("Error inserting user data:", err);
+                        res.status(500).send("Internal Server Error");
+                    });
+                }
             });
         }
     });
-
-})
+});
 
 
 //Submit Survey post
@@ -186,6 +203,7 @@ app.post('/submitSurvey', (req, res) => {
     let question19 = req.body.question19;
     let question20 = req.body.question20;
     let surveytime = new Date()
+    let location = req.body.location;
 
 
     knex("survey").insert({
@@ -208,7 +226,7 @@ app.post('/submitSurvey', (req, res) => {
         depressed_or_down: question18,
         interest_fluctuation: question19,
         sleep_issues: question20,
-        origin: from
+        origin: location
     }).then(recordNumber => {
         knex.select("survey_id").from("survey").where("survey_time", surveytime).andWhere("age", age).andWhere("gender_id", gender).andWhere("relationship_id", relationshipStatus).then(surveyData => {
                 if (surveyData.length > 0) {
@@ -323,13 +341,13 @@ app.get("/surveyResults", (req, res) => {
 
 //Other page routes with authentication
 app.get('/dashboard', (req, res) => {
-    if (req.session.user === 'admin') {
+    if (req.session.user.role === 'admin') {
         res.render(__dirname + "/public/pages/dashboard.ejs", {navbar: adminnavbar});
     }
-    else if (req.session.user === 'employee') {
+    else if (req.session.user.role === 'employee') {
         res.render(__dirname + "/public/pages/dashboard.ejs", {navbar: employeenavbar});
     }
-    else if (req.session.user === 'user'){
+    else if (req.session.user.role === 'user'){
         res.render(__dirname + "/public/pages/dashboard.ejs", {navbar: usernavbar});
     }
     else {
@@ -337,14 +355,15 @@ app.get('/dashboard', (req, res) => {
     }
 })
 
+
 app.get('/survey', (req, res) => {
-    if (req.session.user === 'admin') {
+    if (req.session.user.role === 'admin') {
         res.render(__dirname + "/public/pages/survey.ejs", {navbar: adminnavbar});
     }
-    else if (req.session.user === 'employee') {
+    else if (req.session.user.role === 'employee') {
         res.render(__dirname + "/public/pages/survey.ejs", {navbar: employeenavbar});
     }
-    else if (req.session.user === 'user') {
+    else if (req.session.user.role === 'user') {
         res.render(__dirname + "/public/pages/survey.ejs", {navbar: usernavbar});
     }
     else {
@@ -354,13 +373,13 @@ app.get('/survey', (req, res) => {
 
 
 app.get('/resources', (req, res) => {
-    if (req.session.user === 'admin') {
+    if (req.session.user.role === 'admin') {
         res.render(__dirname + "/public/pages/resources.ejs", {navbar: adminnavbar});
     }
-    else if (req.session.user === 'employee') {
+    else if (req.session.user.role === 'employee') {
         res.render(__dirname + "/public/pages/resources.ejs", {navbar: employeenavbar});
     }
-    else if (req.session.user === 'user') {
+    else if (req.session.user.role === 'user') {
         res.render(__dirname + "/public/pages/resources.ejs", {navbar: usernavbar});
     }
     else {
@@ -368,6 +387,198 @@ app.get('/resources', (req, res) => {
     }
 });
 
+//View Profile Route
+app.get('/viewProfile', (req, res) => {
+    if (req.session.user) {
+        if (req.session.user.role === "admin") {
+            knex("users").select().where("username", req.session.user.username).then(user => {
+                res.render(__dirname + "/public/pages/profile.ejs", {navbar: adminnavbar, user: user[0]});
+            });
+        }
+        else if (req.session.user.role === "employee") {
+            knex("users").select().where("username", req.session.user.username).then(user => {
+                res.render(__dirname + "/public/pages/profile.ejs", {navbar: employeenavbar, user: user[0]});
+            });
+        }
+        else {
+            knex("users").select().where("username", req.session.user.username).then(user => {
+                res.render(__dirname + "/public/pages/profile.ejs", {navbar: usernavbar, user: user[0]});
+            })
+        }
+    } else {
+        res.sendFile(__dirname + '/public/pages/notAuthorized.html');
+    }
+});
+
+//Edit Profile Route
+app.get('/edit-profile', (req, res) => {
+    if (req.session.user) {
+        if (req.session.user.role === "admin") {
+            knex("users").select().where("username", req.session.user.username).then(user => {
+                res.render(__dirname + "/public/pages/edit-profile.ejs", {navbar: adminnavbar, user: user[0], message:''});
+            });
+        }
+        else if (req.session.user.role === "employee") {
+            knex("users").select().where("username", req.session.user.username).then(user => {
+                res.render(__dirname + "/public/pages/edit-profile.ejs", {navbar: employeenavbar, user: user[0], message: ''});
+            });
+        }
+        else {
+            knex("users").select().where("username", req.session.user.username).then(user => {
+                res.render(__dirname + "/public/pages/edit-profile.ejs", {navbar: usernavbar, user: user[0], message: ''});
+            })
+        }
+    } else {
+        res.sendFile(__dirname + '/public/pages/notAuthorized.html');
+    }
+});
+
+app.post('/edit-profile', (req, res) => {
+    let firstname = req.body.user_first_name;
+    let lastname = req.body.user_last_name;
+    let email = req.body.user_email;
+
+    if (firstname === "" || lastname === "" || email === "") {
+        // If any field is empty, display an error message
+        res.render(__dirname + "/public/pages/edit-profile", { message: 'Please fill in all fields.' });
+    } else if (firstname.length > 30 || lastname.length > 30 || email.length > 30) {
+        // If any field is longer than 30 characters, display an error message
+        res.render(__dirname + "/public/pages/edit-profile", { message: 'Please make sure all fields are less than 30 characters.' });
+    } else {
+        // Update the user's information in the database
+        knex("users")
+            .where("username", req.session.user.username)
+            .update({
+                first_name: firstname,
+                last_name: lastname,
+                email: email,
+            })
+            .then(() => {
+                // Fetch the updated user data after the update operation
+                knex("users")
+                    .select()
+                    .where("username", req.session.user.username)
+                    .then(updatedUser => {
+                        const user = updatedUser[0]; // Extract the user object from the array
+
+                        // Render the profile page with the updated user information
+                        if (req.session.user.role === "admin") {
+                            res.render(__dirname + "/public/pages/profile", { message: "Account updated successfully.", navbar: adminnavbar, user: user });
+                        } else if (req.session.user.role === "employee") {
+                            res.render(__dirname + "/public/pages/profile", { message: "Account updated successfully.", navbar: employeenavbar, user: user });
+                        } else {
+                            res.render(__dirname + "/public/pages/profile", { message: "Account updated successfully.", navbar: usernavbar, user: user });
+                        }
+                    })
+                    .catch(err => {
+                        // Handle any error that occurred during fetching the updated user data
+                        console.error("Error fetching updated user data:", err);
+                        res.status(500).send("Internal Server Error");
+                    });
+            })
+            .catch(err => {
+                // Handle any error that occurred during the update operation
+                console.error("Error updating user data:", err);
+                res.status(500).send("Internal Server Error");
+            });
+    }
+});
+
+//Change Password Route
+app.get('/change-password', (req, res) => {
+    if (req.session.user) {
+        if (req.session.user.role === "admin") {
+            res.render(__dirname + "/public/pages/change-password.ejs", {navbar: adminnavbar, username: req.session.user.username, message:''});
+        }
+        else if (req.session.user.role === "employee") {
+            res.render(__dirname + "/public/pages/change-password.ejs", {navbar: employeenavbar, username: req.session.user.username, message:''});
+        }
+        else {
+            res.render(__dirname + "/public/pages/change-password.ejs", {navbar: usernavbar, username: req.session.user.username, message:''});
+        }
+    } else {
+        res.sendFile(__dirname + '/public/pages/notAuthorized.html');
+    }
+});
+
+app.post('/change-password', (req, res) => {
+    let username = req.body.username;
+    let oldPassword = req.body.oldPassword;
+    let newPassword = req.body.newPassword;
+    let confirmPassword = req.body.confirmPassword;
+
+    if (oldPassword === "" || newPassword === "" || confirmPassword === "") {
+        // If any field is empty, display an error message
+        res.render(__dirname + "/public/pages/change-password", { message: 'Please fill in all fields.' });
+    } else if (newPassword !== confirmPassword) {
+        // If the new password and confirm password don't match, display an error message
+        res.render(__dirname + "/public/pages/change-password", { message: 'New password and confirm password do not match.' });
+    } else if (newPassword.length > 30) {
+        // If any field is longer than 30 characters, display an error message
+        res.render(__dirname + "/public/pages/change-password", { message: 'Please make sure all fields are less than 30 characters.' });
+    } else {
+        // Fetch the user's password from the database
+        knex("users")
+            .select("password")
+            .where("username", username)
+            .then(user => {
+                const hashedPassword = user[0].password; // Extract the hashed password from the user object
+
+                // Compare the old password with the hashed password
+                bcrypt.compare(oldPassword, hashedPassword, (err, result) => {
+                    if (err) {
+                        // Handle any error that occurred during the comparison
+                        console.error("Error comparing passwords:", err);
+                        res.status(500).send("Internal Server Error");
+                    } else if (!result) {
+                        // If the old password is incorrect, display an error message
+                        res.render(__dirname + "/public/pages/change-password", { message: 'Incorrect password.' });
+                    } else {
+                        // Hash the new password
+                        bcrypt.hash(newPassword, 10, (err, hash) => {
+                            if (err) {
+                                // Handle any error that occurred during the hashing
+                                console.error("Error hashing password:", err);
+                                res.status(500).send("Internal Server Error");
+                            } else {
+                                // Update the user's password in the database
+                                knex("users")
+                                    .where("username", username)
+                                    .update({
+                                        password: hash
+                                    })
+                                    .then(() => {
+                                        // Render the change password page with a success message
+                                        if (req.session.user.role === "admin") {
+                                            res.render(__dirname + "/public/pages/profile", { message: 'Password changed successfully.', navbar: adminnavbar, username: username });
+                                        }
+                                        else if (req.session.user.role === "employee") {
+                                            res.render(__dirname + "/public/pages/profile", { message: 'Password changed successfully.', navbar: employeenavbar, username: username });
+                                        }
+                                        else {
+                                            res.render(__dirname + "/public/pages/profile", { message: 'Password changed successfully.', navbar: usernavbar, username: username });
+                                        }
+                                    })
+                                    .catch(updateError => {
+                                        console.error("Error updating password:", updateError);
+                                        res.status(500).send("Internal Server Error");
+                                    });
+                            }
+                        });
+                    }
+                });
+            })
+            .catch(queryError => {
+                console.error("Error querying user:", queryError);
+                res.status(500).send("Internal Server Error");
+            });
+    }
+});
+
+//TODO: For testing purposes.  Delete me!
+app.get('/test', (req, res) => {
+    res.render(__dirname + "/public/pages/test.ejs", {navbar: guestnavbar});
+});
 
 
 app.listen(port, () => console.log("Listening on port: " + port + "."));

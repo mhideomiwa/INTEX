@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <form action="/changePassword" method="post" class="signUpForm" onsubmit="submitForm()">
+        <label for="old_password">Old Password</label> <br>
+        <input type="password" id="old_password" name="old_password" class="required, signUpInput" maxlength="30" onkeyup="validateOldPassword()"> <br>
+        <span id="oldPasswordMessage"></span>
+        <label for="new_password">Password</label> <br>
+        <input type="password" id="new_password" name="new_password" class="required, signUpInput" maxlength="30"  placeholder="At least 6 characters" onkeyup="validatePassword()"> <br>
+        <span id="pwMessage"></span>
+        <label for="password_confirm">Confirm Password</label> <br>
+        <input type="password" id="password_confirm" name="password_confirm" class="required, signUpInput" maxlength="30" onkeyup="validatePasswordConfirm()">
+        <span id="pwConfirmMessage"></span> <br>
+        <input type="submit" id="signup" value="Change Password" class="signUpButton">
+    </form>
+</body>
+</html>
