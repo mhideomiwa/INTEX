@@ -1,29 +1,23 @@
 const express = require("express");
-
 const session = require("express-session");
-
-let app = express();
-
+const ejs = require('ejs');
 const bcrypt = require("bcrypt");
+const path = require("path");
 
-let path = require("path");
-
+const app = express();
 const port = process.env.PORT || 3000;
 
 app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "public/pages"));
 
-app.use(express.urlencoded({extended : true}));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.urlencoded({ extended: true }));
+
 app.use(session({
     secret: 'Xr!af03SNk@cD@nu',
     resave: false,
     saveUninitialized: true,
-}))
-
-
-app.set("views", path.join(__dirname, "public/pages"));
-
-app.use(express.urlencoded({extended : true}));
+}));
 
 
 //Knex setup
@@ -283,65 +277,181 @@ app.post('/submitSurvey', (req, res) => {
 
 
 //Display Survey Results
-app.get("/surveyResults", (req, res) => {
-    if (req.session.user) {
-        if (req.session.user.role === "admin" || req.session.user.role === 'employee') {
-            knex.raw(`
-              SELECT
-                s.survey_id,
-                s.survey_time,
-                s.age,
-                g.gender_description,
-                r.relationship_description,
-                o.occupation_description,
-                string_agg(org.organization_type, ', ') AS organization_type,
-                s.use_social_media,
-                string_agg(p.platform_name, ', ') AS platform_name,
-                t.time_description,
-                s.no_specific_purpose,
-                s.distracted_by_social_media,
-                s.restless_without_social_media,
-                s.easily_distracted,
-                s.bothered_by_worries,
-                s.concentration_difficulty,
-                s.compare_with_successful_people,
-                s.feel_about_comparisons,
-                s.validation_from_social_media,
-                s.depressed_or_down,
-                s.interest_fluctuation,
-                s.sleep_issues,
-                s.origin
-                FROM
-                survey s
-                JOIN gender g ON s.gender_id = g.gender_id
-                JOIN relationship_status r ON s.relationship_id = r.relationship_id
-                JOIN occupation_status o ON s.occupation_id = o.occupation_id
-                LEFT JOIN individual_organizations io ON s.survey_id = io.survey_id
-                JOIN organization org ON io.organization_id = org.organization_id
-                JOIN time_spent t ON s.time_id = t.time_id
-                LEFT JOIN individual_platforms ip ON s.survey_id = ip.survey_id
-                JOIN platform p ON ip.platform_id = p.platform_id
-                GROUP BY s.survey_id, s.survey_time, s.age, g.gender_description,
-                         r.relationship_description, o.occupation_description, s.use_social_media,
-                         t.time_description, s.no_specific_purpose, s.distracted_by_social_media,
-                         s.restless_without_social_media, s.easily_distracted, s.bothered_by_worries,
-                         s.concentration_difficulty, s.compare_with_successful_people, s.feel_about_comparisons,
-                         s.validation_from_social_media, s.depressed_or_down, s.interest_fluctuation, s.sleep_issues, s.origin;
-            `).then(surveyData => {
-                // console.log(surveyData)
-                if (req.user.role === 'admin') {
-                    res.render(__dirname + "/public/pages/surveyResults.ejs", {surveyData: surveyData.rows, navbar: adminnavbar});
+app.get("/surveyResults", async (req, res) => {
+    try {
+        if (req.session.user) {
+            if (req.session.user.role === "admin" || req.session.user.role === 'employee') {
+                const surveyData = await knex.raw(`
+                    SELECT
+                    s.survey_id,
+                    s.survey_time,
+                    s.age,
+                    g.gender_description,
+                    r.relationship_description,
+                    o.occupation_description,
+                    string_agg(org.organization_type, ', ') AS organization_type,
+                    s.use_social_media,
+                    string_agg(p.platform_name, ', ') AS platform_name,
+                    t.time_description,
+                    s.no_specific_purpose,
+                    s.distracted_by_social_media,
+                    s.restless_without_social_media,
+                    s.easily_distracted,
+                    s.bothered_by_worries,
+                    s.concentration_difficulty,
+                    s.compare_with_successful_people,
+                    s.feel_about_comparisons,
+                    s.validation_from_social_media,
+                    s.depressed_or_down,
+                    s.interest_fluctuation,
+                    s.sleep_issues,
+                    s.origin
+                    FROM
+                    survey s
+                    JOIN gender g ON s.gender_id = g.gender_id
+                    JOIN relationship_status r ON s.relationship_id = r.relationship_id
+                    JOIN occupation_status o ON s.occupation_id = o.occupation_id
+                    LEFT JOIN individual_organizations io ON s.survey_id = io.survey_id
+                    JOIN organization org ON io.organization_id = org.organization_id
+                    JOIN time_spent t ON s.time_id = t.time_id
+                    LEFT JOIN individual_platforms ip ON s.survey_id = ip.survey_id
+                    JOIN platform p ON ip.platform_id = p.platform_id
+                    GROUP BY s.survey_id, s.survey_time, s.age, g.gender_description,
+                    r.relationship_description, o.occupation_description, s.use_social_media,
+                    t.time_description, s.no_specific_purpose, s.distracted_by_social_media,
+                    s.restless_without_social_media, s.easily_distracted, s.bothered_by_worries,
+                    s.concentration_difficulty, s.compare_with_successful_people, s.feel_about_comparisons,
+                    s.validation_from_social_media, s.depressed_or_down, s.interest_fluctuation, s.sleep_issues, s.origin;
+                    `); // Fetch complete survey data
+
+                if (req.session.user.role === 'admin') {
+                    res.render(__dirname + "/public/pages/surveyResults.ejs", { surveyData: surveyData.rows, navbar: adminnavbar });
                 } else {
-                    res.render(__dirname + "/public/pages/surveyResults.ejs", {surveyData: surveyData.rows, navbar: employeenavbar});
+                    res.render(__dirname + "/public/pages/surveyResults.ejs", { surveyData: surveyData.rows, navbar: employeenavbar });
                 }
-            });
+            } else {
+                res.sendFile(__dirname + "/public/pages/notAuthorized.html");
+            }
         } else {
-            res.sendFile(__dirname + "/public/pages/notAuthorized.html");
+            res.render(__dirname + "/public/pages/login", { message: "Please login to view this page.", navbar: guestnavbar });
         }
-    } else {
-        res.render(__dirname + "/public/pages/login", {message: "Please login to view this page."});
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('An error occurred');
     }
 });
+
+//Filter Survey Results
+app.post("/filterSurveyResults", async(req, res) => {
+    try {
+        console.log('Body: ', req.body);
+        let surveyId = req.body.SurveyIdSearch;
+        let location1 = req.body.LocationSearch1;
+        let location2 = req.body.LocationSearch2;
+        let timeSpent = [
+            req.body.TimeSpentSearch1,
+            req.body.TimeSpentSearch2,
+            req.body.TimeSpentSearch3,
+            req.body.TimeSpentSearch4,
+            req.body.TimeSpentSearch5,
+            req.body.TimeSpentSearch6
+        ].filter(Boolean); // Remove undefined values
+
+
+        // console.log('surveyId:', surveyId, 'location1:', location1, 'location2:', location2, 'timeSpent:', timeSpent);
+
+        let query = knex("survey")
+            .select(
+                "s.survey_id",
+                "s.survey_time",
+                "s.age",
+                "g.gender_description",
+                "r.relationship_description",
+                "o.occupation_description",
+                knex.raw("string_agg(org.organization_type, ', ') AS organization_type"),
+                "s.use_social_media",
+                knex.raw("string_agg(p.platform_name, ', ') AS platform_name"),
+                "t.time_description",
+                "s.no_specific_purpose",
+                "s.distracted_by_social_media",
+                "s.restless_without_social_media",
+                "s.easily_distracted",
+                "s.bothered_by_worries",
+                "s.concentration_difficulty",
+                "s.compare_with_successful_people",
+                "s.feel_about_comparisons",
+                "s.validation_from_social_media",
+                "s.depressed_or_down",
+                "s.interest_fluctuation",
+                "s.sleep_issues",
+                "s.origin"
+            )
+            .from("survey as s")
+            .join("gender as g", "s.gender_id", "=", "g.gender_id")
+            .join("relationship_status as r", "s.relationship_id", "=", "r.relationship_id")
+            .join("occupation_status as o", "s.occupation_id", "=", "o.occupation_id")
+            .leftJoin("individual_organizations as io", "s.survey_id", "=", "io.survey_id")
+            .join("organization as org", "io.organization_id", "=", "org.organization_id")
+            .join("time_spent as t", "s.time_id", "=", "t.time_id")
+            .leftJoin("individual_platforms as ip", "s.survey_id", "=", "ip.survey_id")
+            .join("platform as p", "ip.platform_id", "=", "p.platform_id")
+            .groupBy(
+                "s.survey_id",
+                "s.survey_time",
+                "s.age",
+                "g.gender_description",
+                "r.relationship_description",
+                "o.occupation_description",
+                "s.use_social_media",
+                "t.time_description",
+                "s.no_specific_purpose",
+                "s.distracted_by_social_media",
+                "s.restless_without_social_media",
+                "s.easily_distracted",
+                "s.bothered_by_worries",
+                "s.concentration_difficulty",
+                "s.compare_with_successful_people",
+                "s.feel_about_comparisons",
+                "s.validation_from_social_media",
+                "s.depressed_or_down",
+                "s.interest_fluctuation",
+                "s.sleep_issues",
+                "s.origin"
+            );
+
+
+        // Apply filters if they are provided
+        if (surveyId && surveyId.trim() !== '') {
+            query = query.where("s.survey_id", surveyId);
+        }
+
+        if (location1 || location2) {
+            query.andWhere(function () {
+                if (location1) this.where("s.origin", location1);
+                if (location2) this.orWhere("s.origin", location2);
+            });
+        }
+
+        if (timeSpent.length > 0) {
+            query.andWhere(function () {
+                this.whereIn("s.time_id", timeSpent);
+            });
+        }
+
+        // Execute the query
+        const surveyData = await query;
+
+        // Render the table rows HTML using EJS
+        const tableRowsHTML = await ejs.renderFile(__dirname + '/public/modules/tableRows.ejs', { surveyData });
+        res.send(tableRowsHTML); // Send only the updated table rows HTML back to the client
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('An error occurred');
+    }
+});
+
+
+
 
 //Other page routes with authentication
 app.get('/dashboard', (req, res) => {
@@ -579,6 +689,8 @@ app.post('/change-password', (req, res) => {
             });
     }
 });
+
+
 
 //TODO: For testing purposes.  Delete me!
 app.get('/test', (req, res) => {

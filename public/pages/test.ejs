@@ -1,1 +1,45 @@
 <%- navbar %>>
+
+
+`
+SELECT
+s.survey_id,
+s.survey_time,
+s.age,
+g.gender_description,
+r.relationship_description,
+o.occupation_description,
+string_agg(org.organization_type, ', ') AS organization_type,
+s.use_social_media,
+string_agg(p.platform_name, ', ') AS platform_name,
+t.time_description,
+s.no_specific_purpose,
+s.distracted_by_social_media,
+s.restless_without_social_media,
+s.easily_distracted,
+s.bothered_by_worries,
+s.concentration_difficulty,
+s.compare_with_successful_people,
+s.feel_about_comparisons,
+s.validation_from_social_media,
+s.depressed_or_down,
+s.interest_fluctuation,
+s.sleep_issues,
+s.origin
+FROM
+survey s
+JOIN gender g ON s.gender_id = g.gender_id
+JOIN relationship_status r ON s.relationship_id = r.relationship_id
+JOIN occupation_status o ON s.occupation_id = o.occupation_id
+LEFT JOIN individual_organizations io ON s.survey_id = io.survey_id
+JOIN organization org ON io.organization_id = org.organization_id
+JOIN time_spent t ON s.time_id = t.time_id
+LEFT JOIN individual_platforms ip ON s.survey_id = ip.survey_id
+JOIN platform p ON ip.platform_id = p.platform_id
+GROUP BY s.survey_id, s.survey_time, s.age, g.gender_description,
+r.relationship_description, o.occupation_description, s.use_social_media,
+t.time_description, s.no_specific_purpose, s.distracted_by_social_media,
+s.restless_without_social_media, s.easily_distracted, s.bothered_by_worries,
+s.concentration_difficulty, s.compare_with_successful_people, s.feel_about_comparisons,
+s.validation_from_social_media, s.depressed_or_down, s.interest_fluctuation, s.sleep_issues, s.origin;
+`
