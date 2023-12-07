@@ -3,12 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Survey Results</title>
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/css/survey-results.css">
+    <script src="/pages/surveyResults.js"></script>
 </head>
 <body>
-<label><b>Survey Information:</b></label>
+
+<%- navbar %>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1>Survey Results</h1>
+        </div>
+    </div>
+</div>
 <br><br>
-<table style="width: 100%; background-color: antiquewhite; border: 1px solid black;">
+
+<form id="filterForm" enctype="multipart/form-data">
+    <label for="surveyIdSearch">Survey ID:</label>
+    <input type="text" id="SurveyIdSearch" name="SurveyIdSearch" placeholder="Survey Id">
+    <br><br>
+    Location:
+    <input type="checkbox" id="LocationSearch1" name="LocationSearch1" value="Provo">
+    <label for="LocationSearch1">Provo</label>
+    <input type="checkbox" id="LocationSearch2" name="LocationSearch2" value="Plainsville">
+    <label for="LocationSearch2">Plainsville</label>
+    <br><br>
+    Time Spent:
+    <input type="checkbox" id="TimeSpentSearch1" name="TimeSpentSearch1" value="1">
+    <label for="TimeSpentSearch1">Less than 1 hour</label>
+    <input type="checkbox" id="TimeSpentSearch2" name="TimeSpentSearch2" value="2">
+    <label for="TimeSpentSearch2">Between 1 and 2 Hours</label>
+    <input type="checkbox" id="TimeSpentSearch3" name="TimeSpentSearch3" value="3">
+    <label for="TimeSpentSearch3">Between 2 and 3 Hours</label>
+    <input type="checkbox" id="TimeSpentSearch4" name="TimeSpentSearch4" value="4">
+    <label for="TimeSpentSearch4">Between 3 and 4 Hours</label>
+    <input type="checkbox" id="TimeSpentSearch5" name="TimeSpentSearch5" value="5">
+    <label for="TimeSpentSearch5">Between 4 and 5 Hours</label>
+    <input type="checkbox" id="TimeSpentSearch6" name="TimeSpentSearch6" value="6">
+    <label for="TimeSpentSearch6">More than 5 hours</label>
+
+    <br><br>
+
+    <input type="submit" value="Apply Filters">
+</form>
+
+
+<table id="surveyTable" style="width: 100%; background-color: antiquewhite; border: 1px solid black;">
     <thead style="background-color: cornflowerblue; color: white;">
     <tr>
         <th style="text-align: left;">Survey Id</th>
@@ -36,43 +80,11 @@
         <th style="text-align: left;">Origin</th>
     </tr>
     </thead>
-    <tbody style="font-family: Arial; font-size: 9pt;">
-    <% for (let iCount = 0; iCount < surveyData.length; iCount++) { %>
-        <tr>
-            <td><%= surveyData[iCount].survey_id %></td>
-            <td><%= surveyData[iCount].survey_time %></td>
-            <td><%= surveyData[iCount].age %></td>
-            <td><%= surveyData[iCount].gender_description%></td>
-            <td><%= surveyData[iCount].relationship_description %></td>
-            <td><%= surveyData[iCount].occupation_description %></td>
-            <td><%= surveyData[iCount].platform_name %></td>
-            <td><%= surveyData[iCount].use_social_media %></td>
-            <td><%= surveyData[iCount].platform_name %></td>
-            <td><%= surveyData[iCount].time_description %></td>
-            <td><%= surveyData[iCount].no_specific_purpose %></td>
-            <td><%= surveyData[iCount].distracted_by_social_media %></td>
-            <td><%= surveyData[iCount].restless_without_social_media %></td>
-            <td><%= surveyData[iCount].easily_distracted %></td>
-            <td><%= surveyData[iCount].bothered_by_worries %></td>
-            <td><%= surveyData[iCount].concentration_difficulty %></td>
-            <td><%= surveyData[iCount].compare_with_successful_people %></td>
-            <td><%= surveyData[iCount].feel_about_comparisons %></td>
-            <td><%= surveyData[iCount].validation_from_social_media %></td>
-            <td><%= surveyData[iCount].depressed_or_down %></td>
-            <td><%= surveyData[iCount].interest_fluctuation %></td>
-            <td><%= surveyData[iCount].sleep_issues %></td>
-            <td><%= surveyData[iCount].origin %></td>
-
-
-
-
-        </tr>
-    <% } %>
+    <tbody id="surveyTableBody" style="font-family: Arial; font-size: 9pt;">
+    <% include('../modules/tableRows.ejs') %>
     </tbody>
 </table>
 <br><br>
-<!--<form action="/addCountry" method="GET">-->
-<!--    <button type="submit">Add Country</button>-->
-<!--</form>-->
+
 </body>
 </html>
