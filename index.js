@@ -329,7 +329,11 @@ app.get("/surveyResults", (req, res) => {
                          s.validation_from_social_media, s.depressed_or_down, s.interest_fluctuation, s.sleep_issues, s.origin;
             `).then(surveyData => {
                 // console.log(surveyData)
-                res.render(__dirname + "/public/pages/surveyResults.ejs", {surveyData: surveyData.rows});
+                if (req.user.role === 'admin') {
+                    res.render(__dirname + "/public/pages/surveyResults.ejs", {surveyData: surveyData.rows, navbar: adminnavbar});
+                } else {
+                    res.render(__dirname + "/public/pages/surveyResults.ejs", {surveyData: surveyData.rows, navbar: employeenavbar});
+                }
             });
         } else {
             res.sendFile(__dirname + "/public/pages/notAuthorized.html");
@@ -341,48 +345,49 @@ app.get("/surveyResults", (req, res) => {
 
 //Other page routes with authentication
 app.get('/dashboard', (req, res) => {
-    if (req.session.user.role === 'admin') {
-        res.render(__dirname + "/public/pages/dashboard.ejs", {navbar: adminnavbar});
-    }
-    else if (req.session.user.role === 'employee') {
-        res.render(__dirname + "/public/pages/dashboard.ejs", {navbar: employeenavbar});
-    }
-    else if (req.session.user.role === 'user'){
-        res.render(__dirname + "/public/pages/dashboard.ejs", {navbar: usernavbar});
-    }
-    else {
+    if (req.session.user) {
+        if (req.session.user.role === "admin") {
+            res.render(__dirname + "/public/pages/dashboard.ejs", {navbar: adminnavbar});
+        }
+        else if (req.session.user.role === "employee") {
+            res.render(__dirname + "/public/pages/dashboard.ejs", {navbar: employeenavbar});
+        }
+        else {
+            res.render(__dirname + "/public/pages/dashboard.ejs", {navbar: usernavbar});
+        }
+    } else {
         res.render(__dirname + "/public/pages/dashboard.ejs", {navbar: guestnavbar});
     }
-})
-
+});
 
 app.get('/survey', (req, res) => {
-    if (req.session.user.role === 'admin') {
-        res.render(__dirname + "/public/pages/survey.ejs", {navbar: adminnavbar});
-    }
-    else if (req.session.user.role === 'employee') {
-        res.render(__dirname + "/public/pages/survey.ejs", {navbar: employeenavbar});
-    }
-    else if (req.session.user.role === 'user') {
-        res.render(__dirname + "/public/pages/survey.ejs", {navbar: usernavbar});
-    }
-    else {
+    if (req.session.user) {
+        if (req.session.user.role === "admin") {
+            res.render(__dirname + "/public/pages/survey.ejs", {navbar: adminnavbar});
+        }
+        else if (req.session.user.role === "employee") {
+            res.render(__dirname + "/public/pages/survey.ejs", {navbar: employeenavbar});
+        }
+        else {
+            res.render(__dirname + "/public/pages/survey.ejs", {navbar: usernavbar});
+        }
+    } else {
         res.render(__dirname + "/public/pages/survey.ejs", {navbar: guestnavbar});
     }
 });
 
-
 app.get('/resources', (req, res) => {
-    if (req.session.user.role === 'admin') {
-        res.render(__dirname + "/public/pages/resources.ejs", {navbar: adminnavbar});
-    }
-    else if (req.session.user.role === 'employee') {
-        res.render(__dirname + "/public/pages/resources.ejs", {navbar: employeenavbar});
-    }
-    else if (req.session.user.role === 'user') {
-        res.render(__dirname + "/public/pages/resources.ejs", {navbar: usernavbar});
-    }
-    else {
+    if (req.session.user) {
+        if (req.session.user.role === "admin") {
+            res.render(__dirname + "/public/pages/resources.ejs", {navbar: adminnavbar});
+        }
+        else if (req.session.user.role === "employee") {
+            res.render(__dirname + "/public/pages/resources.ejs", {navbar: employeenavbar});
+        }
+        else {
+            res.render(__dirname + "/public/pages/resources.ejs", {navbar: usernavbar});
+        }
+    } else {
         res.render(__dirname + "/public/pages/resources.ejs", {navbar: guestnavbar});
     }
 });
