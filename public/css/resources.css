@@ -1,85 +1,133 @@
-a {color: #2b2823;
-    text-decoration: none;}
 
-.socialMedia {
-    margin: 10px;
-    padding: 0px;
-}
+    /* Style your accordion here */
 
-.title {
-    font-size: 30px;
-}
+    .container2 {
+        display: flex;
+        flex-direction: column; /* Stack the dropdowns vertically */
+        align-items: center; /* Center the dropdowns horizontally */
+        justify-content: center; /* Center the dropdowns vertically *//* Set the width to 90% */
+        margin: auto; /* Center the container horizontally */
+    }
 
-.container {
-    display: flex;
-    width: 100%;
-    justify-content: center;
-}
+    .accordion {
+        border: 1px solid #ddd;
+        margin-bottom: 5px;
+        cursor: pointer;
+        width: 90%;
+    }
 
-.category {
-    margin-top: 30px;
-    margin-left: 60px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    position: relative;
-}
+    .accordion-header {
+        background-color: #f1f1f1;
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: bold;
+        position: relative; 
+    }
 
-.icon {
-    width: 120px; /* Adjust the width as needed */
-    height: 100px; /* Adjust the height as needed */
-    margin-right: 5px;
-}
+    .accordion-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-in-out;
+        margin-left: 10px ;
+    }
 
-.title {
-    font-weight: bold;
-}
+    .accordion.active .accordion-content {
+        max-height: 500px;
+         /* Adjust the maximum height as needed */
+    }
 
-.dropdown-content {
-    display: none;
-    position: absolute;
-    top: 100%; /* Position the dropdown beneath the title */
-    left: 0;
-    width: 100%;
-    background-color: #fff;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    padding: 10px;
-    align-items: center;
-}
+    .accordion-header:hover {
+        background-color: #c44601;
+        color:#f1f1f1; /* Matching background color on hover */
+    }
 
-.category:hover .dropdown-content {
-    display: block;
-}
+    .accordion.active .accordion-header {
+        background-color: #c44601;
+        color:#f1f1f1; /* Change to the desired click color */
+    }
 
-.listContainer {
-    margin-top: auto; /* Move the list container to the bottom */
-    text-align: center;
-    align-items: center;
-    width: 100%;
-}
 
-.listContainer ul {
-    list-style: none;
-    padding: 0;
-}
+    /* Add an arrow icon */
+    .dropdown-arrow {
+        display: inline-block;
+        border-left: 6px solid #2b2823;
+        border-top: 6px solid transparent;
+        border-bottom: 6px solid transparent;
+        transition: transform 0.3s;
+    }
 
-.listContainer li {
-    margin-bottom: 10px; /* Adjust the margin as needed */
-}
+    .accordion.active .dropdown-arrow {
+        transform: rotate(90deg);
+    }
 
-.listContainer a {
-    text-decoration: none;
-    color: #054fb9; /* Choose a color that complements your design */
-    font-weight: bold;
-    display: inline-block;
-    padding: 8px 16px;
-    border: 2px solid #054fb9; /* Matching border color */
-    border-radius: 5px;
-    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
 
-}
+    /* LINKS */
 
-.listContainer a:hover {
-    background-color: #054fb9; /* Matching background color on hover */
-    color: #fff; /* Text color on hover */
-}
+    .listContainer {
+        margin-top: auto; /* Move the list container to the bottom */
+        text-align: center;
+        align-items: center;
+        width: 100%;
+    }
+    
+    .listContainer ul {
+        list-style: none;
+        padding: 0;
+    }
+    
+    .listContainer li {
+        margin-bottom: 10px; /* Adjust the margin as needed */
+    }
+    
+    .listContainer a {
+        text-decoration: none;
+        color: #054fb9; /* Choose a color that complements your design */
+        font-weight: bold;
+        display: inline-block;
+        padding: 8px 16px;
+        border: 2px solid #054fb9; /* Matching border color */
+        border-radius: 5px;
+    
+    }
+    
+    .listContainer a:hover {
+        background-color: #054fb9; /* Matching background color on hover */
+        color: #fff; /* Text color on hover */
+    }
+
+    a {color: #2b2823;
+        text-decoration: none;}
+    
+    .socialMedia {
+        margin: 10px;
+        padding: 0px;
+    }
+    
+    .title {
+        font-size: 35px;
+    }
+    
+    .container {
+        display: flex;
+        justify-content: center;
+    }
+    
+    .category {
+        margin-top: 30px;
+        margin-left: 60px;
+        display: flex;
+        align-items: center;
+        position: relative;
+    }
+    
+    .icon {
+        width: 120px; /* Adjust the width as needed */
+        height: 100px; /* Adjust the height as needed */
+        margin-right: 5px;
+    }
+    
+    .title {
+        font-weight: bold;
+    }
