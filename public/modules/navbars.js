@@ -86,6 +86,7 @@ ${navbarStyles}
         <a href="/dashboard">Dashboard</a>
         <a href="/survey">Survey</a>
         <a href="/resources">Resources</a> 
+        <a href="/surveyResults">Survey Results</a>
         <div class="dropdown">
             <a href="#" class="login-button">My Profile</a>
             <div class="dropdown-content">
