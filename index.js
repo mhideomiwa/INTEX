@@ -26,7 +26,7 @@ const knex = require("knex")({
     connection: {
         host: process.env.RDS_HOSTNAME || 'localhost',
         user: process.env.RDS_USERNAME || 'postgres',
-        password: process.env.RDS_PASSWORD || 'thuet12345',
+        password: process.env.RDS_PASSWORD || 'C1$$&!Xi46RRu0HS',
         database: process.env.RDS_DB_NAME || 'users',
         port: process.env.RDS_PORT || 5432,
         ssl: process.env.DB_SSL ? { rejectUnauthorized: false } : false
@@ -599,20 +599,22 @@ app.get('/change-password', (req, res) => {
 });
 
 app.post('/change-password', (req, res) => {
-    let username = req.body.username;
-    let oldPassword = req.body.oldPassword;
-    let newPassword = req.body.newPassword;
-    let confirmPassword = req.body.confirmPassword;
+    let username = req.session.user.username;
+    let oldPassword = req.body.old_password;
+    let newPassword = req.body.new_password;
+    let confirmPassword = req.body.password_confirm;
 
-    if (oldPassword === "" || newPassword === "" || confirmPassword === "") {
+    // console.log('newPassword')
+
+    if (oldPassword === "" || newPassword === "" || confirmPassword === "" || oldPassword === null || newPassword === null || confirmPassword === null) {
         // If any field is empty, display an error message
-        res.render(__dirname + "/public/pages/change-password", { message: 'Please fill in all fields.' });
+        res.render(__dirname + "/public/pages/change-password", { message: 'Please fill in all fields.', username: username });
     } else if (newPassword !== confirmPassword) {
         // If the new password and confirm password don't match, display an error message
-        res.render(__dirname + "/public/pages/change-password", { message: 'New password and confirm password do not match.' });
+        res.render(__dirname + "/public/pages/change-password", { message: 'New password and confirm password do not match.', username: username });
     } else if (newPassword.length > 30) {
         // If any field is longer than 30 characters, display an error message
-        res.render(__dirname + "/public/pages/change-password", { message: 'Please make sure all fields are less than 30 characters.' });
+        res.render(__dirname + "/public/pages/change-password", { message: 'Please make sure all fields are less than 30 characters.', username: username });
     } else {
         // Fetch the user's password from the database
         knex("users")
@@ -629,7 +631,7 @@ app.post('/change-password', (req, res) => {
                         res.status(500).send("Internal Server Error");
                     } else if (!result) {
                         // If the old password is incorrect, display an error message
-                        res.render(__dirname + "/public/pages/change-password", { message: 'Incorrect password.' });
+                        res.render(__dirname + "/public/pages/change-password", { message: 'Incorrect password.' , username: username});
                     } else {
                         // Hash the new password
                         bcrypt.hash(newPassword, 10, (err, hash) => {
@@ -645,21 +647,36 @@ app.post('/change-password', (req, res) => {
                                         password: hash
                                     })
                                     .then(() => {
-                                        // Render the change password page with a success message
-                                        if (req.session.user.role === "admin") {
-                                            res.render(__dirname + "/public/pages/profile", { message: 'Password changed successfully.', navbar: adminnavbar, username: username });
-                                        }
-                                        else if (req.session.user.role === "employee") {
-                                            res.render(__dirname + "/public/pages/profile", { message: 'Password changed successfully.', navbar: employeenavbar, username: username });
-                                        }
-                                        else {
-                                            res.render(__dirname + "/public/pages/profile", { message: 'Password changed successfully.', navbar: usernavbar, username: username });
-                                        }
+                                        // Fetch the updated user data after password change
+                                        knex("users")
+                                            .select("first_name", "last_name") // Retrieve first_name and last_name from the database
+                                            .where("username", username)
+                                            .then(user => {
+                                                if (user.length === 0) {
+                                                    // Handle case where no user is found
+                                                    res.status(404).send("User not found");
+                                                } else {
+                                                    const userData = user[0]; // Assuming username is unique, fetch the first user data
+                                                    // Render the change password page with user data and a success message
+                                                    if (req.session.user.role === "admin") {
+                                                        res.render(__dirname + "/public/pages/profile", { message: 'Password changed successfully.', navbar: adminnavbar, username: username, user: userData });
+                                                    } else if (req.session.user.role === "employee") {
+                                                        res.render(__dirname + "/public/pages/profile", { message: 'Password changed successfully.', navbar: employeenavbar, username: username, user: userData });
+                                                    } else {
+                                                        res.render(__dirname + "/public/pages/profile", { message: 'Password changed successfully.', navbar: usernavbar, username: username, user: userData });
+                                                    }
+                                                }
+                                            })
+                                            .catch(queryError => {
+                                                console.error("Error querying user:", queryError);
+                                                res.status(500).send("Internal Server Error");
+                                            });
                                     })
                                     .catch(updateError => {
                                         console.error("Error updating password:", updateError);
                                         res.status(500).send("Internal Server Error");
                                     });
+
                             }
                         });
                     }
