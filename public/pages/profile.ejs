@@ -1,53 +1,76 @@
+<!-- HTML5 document type declaration -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+    <!-- Set the character set to UTF-8 -->
     <meta charset="UTF-8">
+    <!-- Set the title of the document -->
     <title>My Profile</title>
+    <!-- Link to external CSS stylesheets -->
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/navbar.css">
     <link rel="stylesheet" href="/css/profile.css">
+    <!-- Include the Feather Icons library -->
     <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
 </head>
+
 <body>
 
+    <!-- Include the navigation bar content dynamically -->
     <%- navbar %>
-<div class="body-container">
+    
+    <!-- Container for the page content -->
+    <div class="body-container">
 
-    <div class="profile-container">
-        <div class="icon-wrapper">
-            <i class="icon" data-feather="user"></i>
+        <!-- Container for the user profile -->
+        <div class="profile-container">
+            <!-- Wrapper for the user icon using Feather Icons -->
+            <div class="icon-wrapper">
+                <i class="icon" data-feather="user"></i>
+            </div>
+            <!-- Heading for the user profile -->
+            <h1>My Profile</h1>
+            <!-- Container for displaying user information -->
+            <div class="profile-info">
+                <div>
+                    <!-- Display user's first name -->
+                    <strong>First Name:</strong> <%- user.first_name %>
+                </div>
+                <div>
+                    <!-- Display user's last name -->
+                    <strong>Last Name:</strong> <%- user.last_name %>
+                </div>
+                <div>
+                    <!-- Display user's email address -->
+                    <strong>Email:</strong> <%- user.email %>
+                </div>
+                <div>
+                    <!-- Display user's username -->
+                    <strong>Username:</strong> <%- user.username %>
+                </div>
+                <div>
+                    <!-- Display masked password for security -->
+                    <strong>Password:</strong> *****
+                </div>
+                <div>
+                    <!-- Display user's role -->
+                    <strong>Role:</strong> <%- user.role %>
+                </div>
+                <!-- Link to edit profile page -->
+                <div class="edit-profile-link">
+                    <a href="/edit-profile">Edit Profile</a>
+                </div>
+            </div>
         </div>
-        <h1>My Profile</h1>
-        <div class="profile-info">
-            <div>
-                <strong>First Name:</strong> <%- user.first_name %>
-            </div>
-            <div>
-                <strong>Last Name:</strong> <%- user.last_name %>
-            </div>
-            <div>
-                <strong>Email:</strong> <%- user.email %>
-            </div>
-            <div>
-                <strong>Username:</strong> <%- user.username %>
-            </div>
-            <div>
-                <strong>Password:</strong> *****
-            </div>
-            <div>
-                <strong>Role:</strong> <%- user.role %>
-            </div>
-            <div class="edit-profile-link">
-                <a href="/edit-profile">Edit Profile</a>
-            </div>
-        </div>
+
     </div>
-
-</div>
-<script>
-    // Activate Feather Icons
-    feather.replace();
-</script>
+    
+    <!-- Script to activate Feather Icons library -->
+    <script>
+        feather.replace();
+    </script>
 </body>
+
 </html>

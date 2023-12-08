@@ -1,25 +1,36 @@
+<!-- HTML5 document type declaration -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+    <!-- Set the character set to UTF-8 -->
     <meta charset="UTF-8">
+    <!-- Set the viewport settings for responsive design -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Link to external CSS stylesheets -->
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/resources.css">
     <link rel="stylesheet" href="/css/navbar.css">
+    <!-- Set the title of the document -->
     <title>Resources - Provo SMU MH</title>
 </head>
+
 <body>
 
+    <!-- Include the navigation bar content dynamically -->
     <%- navbar %>
 
+    <!-- Main heading for the page -->
     <h1 class="socialMedia">Social Media and Mental Health Resources</h1>
     <br>
+
+    <!-- Container for resource categories -->
     <div class="container">
         <div class="category" id="category1">
             <i class="icon" data-feather="heart"></i>
             <div class="title">Intention</div>
         </div>
-    
+
         <div class="category" id="category2">
             <i class="icon" data-feather="smartphone"></i>
             <div class="title">Phone</div>
@@ -31,9 +42,12 @@
         </div>
     </div>
     <br>
+
+    <!-- Subheading for improvement tips -->
     <h2 class="improvement">Improvement Tips:</h2>
     <br>
 
+    <!-- Container for accordion sections -->
     <div class="container2">
         <div class="accordion" onclick="toggleAccordion(this)">
             <div class="accordion-header">Intention<span class="dropdown-arrow"></span></div>
@@ -71,34 +85,41 @@
         </div>
     </div>
     <br>
+
     <!-- List container outside the .container div -->
     <div class="listContainer">
         <h2>For more information see these articles:</h2>
         <ul>
+            <!-- List items with links to articles -->
             <li>
-                <a href="https://www.dfinow.org/10-ways-to-spend-less-time-on-social-media-to-reduce-addictive-side-effects-on-teens/" target="_blank">
+                <a href="https://www.dfinow.org/10-ways-to-spend-less-time-on-social-media-to-reduce-addictive-side-effects-on-teens/"
+                    target="_blank">
                     - 10 Ways to Spend Less Time on Social Media to Reduce Addictive Side Effects on Teens
                 </a>
             </li>
             <li>
-                <a href="https://jedfoundation.org/resource/understanding-social-media-use-and-balance/?gad_source=1&gclid=Cj0KCQiAsburBhCIARIsAExmsu4GRyI0v5KSycoShcpiqsX3WkSLxUvAn-SU9cSoFMoR_tABZgpLAqoaAoDhEALw_wcB" target="_blank">
+                <a href="https://jedfoundation.org/resource/understanding-social-media-use-and-balance/?gad_source=1&gclid=Cj0KCQiAsburBhCIARIsAExmsu4GRyI0v5KSycoShcpiqsX3WkSLxUvAn-SU9cSoFMoR_tABZgpLAqoaAoDhEALw_wcB"
+                    target="_blank">
                     - Understanding Social Media Use and Balance
                 </a>
             </li>
             <li>
-                <a href="https://www.helpguide.org/articles/mental-health/social-media-and-mental-health.htm" target="_blank">
+                <a href="https://www.helpguide.org/articles/mental-health/social-media-and-mental-health.htm"
+                    target="_blank">
                     - Social Media and Mental Health
                 </a>
             </li>
         </ul>
     </div>
 
+    <!-- Include Feather Icons library -->
     <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+    <!-- Script to toggle accordion sections and activate Feather Icons -->
     <script>
         function toggleAccordion(accordion) {
             accordion.classList.toggle('active');
             const content = accordion.querySelector('.accordion-content');
-            
+
             // Toggle the max-height property
             if (content.style.maxHeight) {
                 content.style.maxHeight = null;
@@ -113,4 +134,5 @@
     </script>
 
 </body>
+
 </html>
