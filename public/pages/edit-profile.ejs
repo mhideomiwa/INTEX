@@ -1,41 +1,61 @@
+<!-- HTML5 document type declaration -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+    <!-- Set the character set to UTF-8 -->
     <meta charset="UTF-8">
+    <!-- Set the title of the document -->
     <title>My Profile</title>
+    <!-- Link to external CSS stylesheets -->
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/navbar.css">
     <link rel="stylesheet" href="/css/editprofile.css">
 </head>
+
 <body>
+    <!-- Container for the page content -->
     <div class="body-container">
-            
-        <div class = "header-container">
-        
+
+        <!-- Header container with the title -->
+        <div class="header-container">
             <h1>Edit Profile</h1>
         </div>
 
-        <div class = "content-container">
+        <!-- Content container with the form for editing profile -->
+        <div class="content-container">
+            <!-- Form for editing profile information -->
             <form name="editProfile" action="/edit-profile" method="post">
+                <!-- Display any messages (if available) -->
                 <%= message %><br>
+                <!-- Input field for user's first name -->
                 <label for="user_first_name">First Name</label> <br>
                 <input type="text" id="user_first_name" name="user_first_name" class="required, signUpInput" maxlength="30" onkeyup="validateFirstName()" value="<%- user.first_name %>"> <br>
+                <!-- Display validation message for first name -->
                 <span id="firstNameMessage"></span>
+                <!-- Input field for user's last name -->
                 <label for="user_last_name">Last Name</label> <br>
                 <input type="text" id="user_last_name" name="user_last_name" class="required, signUpInput" maxlength="30" onkeyup="validateLastName()" value="<%- user.last_name %>"> <br>
+                <!-- Display validation message for last name -->
                 <span id="lastNameMessage"></span>
+                <!-- Input field for user's email address -->
                 <label for="user_email">Email Address</label> <br>
                 <input type="text" id="user_email" name="user_email" class="required, signUpInput" maxlength="30" onkeyup="validateEmail()" value="<%- user.email %>"> <br>
+                <!-- Display validation message for email address -->
                 <span id="emailMessage"></span>
+                <!-- Display the username (read-only) -->
                 <label for="username">Username</label> <br>
                 <%- user.username %> <br>
+                <!-- Submit button for submitting profile changes -->
                 <input type="submit" id="editProfileButton" value="Submit Changes" class="editButton">
             </form><br>
+            <!-- Link to change password page -->
             <a href="/change-password">Change Password</a> <br>
-            <!--    Go back button      -->
+            <!-- Go back button to view profile -->
             <a href="/viewProfile">Go Back</a>
         </div>
     </div>
 </body>
+
 </html>

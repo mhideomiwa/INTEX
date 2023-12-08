@@ -1,36 +1,51 @@
+<!-- HTML5 document type declaration -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+    <!-- Set the character set to UTF-8 -->
     <meta charset="UTF-8">
+    <!-- Set the title of the document -->
     <title>Sign Up</title>
+    <!-- Include JavaScript file for signup page -->
     <script src="pages/signup.js"></script>
+    <!-- Set viewport settings for responsive design -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!-- Meta tags for description and author -->
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <!-- Favicon-->
+    <!-- Favicon icon for the page -->
     <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
-    <!-- Font Awesome icons (free version)-->
+    <!-- Font Awesome icons (free version) -->
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-    <!-- Google fonts-->
+    <!-- Google fonts -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+    <!-- Link to external CSS stylesheets -->
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="../css/signup.css">
     <link rel="stylesheet" href="../css/navbar.css">
 
 </head>
+
 <body>
 
+    <!-- Include the navigation bar content dynamically -->
     <%- navbar %>
 
-<!--Signup boxes-->
+    <!-- Signup boxes container -->
     <div class="pageContainer">
         <div class="signUpContainer">
+            <!-- Heading for the signup section -->
             <h2>Sign Up</h2>
             <br>
+            <!-- Signup form container -->
             <div class="signUpFormContainer">
+                <!-- Signup form with action, method, and class attributes -->
                 <form action="/signup" method="post" class="signUpForm">
+                    <!-- Display signup messages -->
                     <%= message %><br>
+                    <!-- Input fields for user information -->
                     <label for="user_first_name">First Name</label> <br>
                     <input type="text" id="user_first_name" name="user_first_name" class="required, signUpInput" maxlength="30" onkeyup="validateFirstName()"> <br>
                     <span id="firstNameMessage"></span>
@@ -44,20 +59,20 @@
                     <input type="text" id="username" name="username" class="required, signUpInput" maxlength="30" onkeyup="validateUsername()"> <br>
                     <span id="userNameMessage"></span>
                     <label for="password">Password</label> <br>
-                    <input type="password" id="password" name="password" class="required, signUpInput" maxlength="30"  placeholder="At least 6 characters" onkeyup="validatePassword()"> <br>
+                    <input type="password" id="password" name="password" class="required, signUpInput" maxlength="30" placeholder="At least 6 characters" onkeyup="validatePassword()"> <br>
                     <span id="pwMessage"></span>
                     <label for="password_confirm">Confirm Password</label> <br>
                     <input type="password" id="password_confirm" name="password_confirm" class="required, signUpInput" maxlength="30" onkeyup="validatePasswordConfirm()">
                     <span id="pwConfirmMessage"></span> <br>
+                    <!-- Submit button for signup -->
                     <input type="submit" id="signupbutton" value="Sign Up" class="signUpButton" disabled="disabled">
                 </form>
             </div>
+            <!-- Message for existing account -->
             <div class="hasAccount">Already have an account? <a href="login" class="logInLink">Log in</a> </div>
         </div>
     </div>
 
-
-
-
 </body>
+
 </html>
