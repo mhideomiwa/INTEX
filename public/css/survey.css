@@ -64,3 +64,7 @@
         button:hover {
             background-color: #24305E;
         }
+
+        .takeSurvey {
+            margin: 10px;
+        }

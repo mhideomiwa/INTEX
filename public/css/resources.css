@@ -39,12 +39,12 @@
     }
 
     .accordion-header:hover {
-        background-color: #c44601;
+        background-color: #054fb9;
         color:#f1f1f1; /* Matching background color on hover */
     }
 
     .accordion.active .accordion-header {
-        background-color: #c44601;
+        background-color: #054fb9;
         color:#f1f1f1; /* Change to the desired click color */
     }
 
@@ -103,10 +103,11 @@
     .socialMedia {
         margin: 10px;
         padding: 0px;
+        font-size: 28px;
     }
     
     .title {
-        font-size: 35px;
+        font-size: 30px;
     }
     
     .container {
@@ -126,6 +127,11 @@
         width: 120px; /* Adjust the width as needed */
         height: 100px; /* Adjust the height as needed */
         margin-right: 5px;
+        stroke: #c44601;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        fill: none;
     }
     
     .title {
